@@ -2,22 +2,45 @@ package Part2Application;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.ObjectOutput;
+import java.io.ObjectOutputStream;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
+import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
+import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 public class AppClient {
 
 	Socket serverSocket;
 	String serverHostName = "localhost";
 	int serverPortNumber = 4444;
+	public static String name;
 	ServerListener sl;
 	Scanner in = new Scanner(System.in);
-	String input = in.next();
-
-	AppClient() {
+	//String input = in.next();
+	
+	//send stream
+	PrintWriter out;
+	ObjectOutputStream out1;
+	
+	AppClient(String clientName) {
 		// 1. CONNECT TO THE SERVER
 		try {
 			serverSocket = new Socket(serverHostName, serverPortNumber);
@@ -32,15 +55,16 @@ public class AppClient {
 		sl = new ServerListener(this, serverSocket);
 		new Thread(sl).start();
 
-		PrintWriter out;
+		
 		try {
 			out = new PrintWriter(new BufferedOutputStream(serverSocket.getOutputStream()));
 			
+			//object output stream
+			out1 = new ObjectOutputStream(serverSocket.getOutputStream());
 			
-			// 3. SEND THREE WISHES TO SERVER
-			out.println("wish 1:  one million bucks "); 			
-			out.flush(); // force the output
-				
+			//send clientName to server
+			out.println(clientName);
+			out.flush();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -62,10 +86,167 @@ public class AppClient {
 			System.out.println("client side: unknown command received:" + cmd);
 		}
 	}
+	
+	public void send() throws IOException{
+		while(true){
+			System.out.println("1. Send a text message to the server: \n2. Send an image file to the server");
+			Scanner in2= new Scanner(System.in);
+			int choice = in2.nextInt();
+			//AppClient lc = new AppClient();
+			
+			if(choice == 1 || choice == 2 ){
+				switch (choice) {
+				case 1:
+					System.out.println("Enter text message");
+					Scanner in3 =new Scanner(System.in);
+					String text1 = in3.next();
+					//lc.sendText(text1, lc);
+					break;
+				case 2:
+					System.out.println("Enter image file");
+					Scanner in4 =new Scanner(System.in);
+					String pic = in4.next();
+					//lc.sendText(pic, lc);
+					break;
+				default:
+					System.out.println("client side: unknown command received:");
+				}
+			}
+			else{
+				throw new IllegalArgumentException("not an option");
+			}
+		}
+	
+	}
+	
+	public void sendText(String text, AppClient ap) throws IOException{
+		PrintWriter out;
+		//out = new PrintWriter(new BufferedOutputStream(serverSocket.getOutputStream()));
+		out = ap.out;
+		out.println(text);
+		out.flush();
+	}
 
-	public static void main(String[] args) {
+	public void sendImage(String pic, AppClient ap) throws IOException{
+		if(pic != null){
+			
+			ObjectOutputStream out1;
+			out1 = ap.out1;
+			File pic1 = new File(pic);
+			
+			if(pic1.isFile() == true){
+				ImageIcon img = new ImageIcon(ImageIO.read(pic1));
+				out1.writeObject(img);
+				out1.flush();
+			}
+			else{
+				System.out.println(pic1.getName());
+				System.out.println(pic1.getPath());
+				System.out.println(pic1.getAbsoluteFile());
+			}
+			}
+		else{
+			System.out.println("invalid file");
+		}
+	}
+
+	public static void main(String[] args) throws IOException {
 		System.out.println("Enter your name:");
-		AppClient lc = new AppClient();
+		Scanner in = new Scanner(System.in);
+		String clientName = in.next();
+
+		
+		AppClient lc = new AppClient(clientName);
+		
+		if(clientName.equals("admin")){ //admin menu
+			while(true){
+				System.out.println("1. Broadcast Message to All Clients \n2. List Message History"
+						+ " \n3. Delete Select Message");
+				int choice = in.nextInt();
+				if(choice == 1 || choice == 2 || choice == 3){
+					switch (choice) {
+					case 1:
+						
+						
+						break;
+					case 2:
+						File file = new File("chat.txt");
+						// append to end of file
+						FileReader fr = new FileReader(file);
+						BufferedReader br = new BufferedReader(fr);
+						String line;
+						while((line = br.readLine()) != null)
+						{
+						    System.out.println(line);
+						}
+						br.close();			
+						break;
+					case 3:
+						System.out.println("Message to delete:");
+						String message = in.next();
+						String charset = "UTF-8";
+						File file1 = new File("chat.txt");
+						File temp = File.createTempFile("file", ".txt", file1.getParentFile());
+						BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file1), charset));
+						BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(temp), charset));
+						String line1;
+						while((line1 = reader.readLine()) != null){
+							line1 = line1.replace(message, "");
+							bw.write(line1);
+						}
+						file1.delete();
+						temp.renameTo(file1);
+						reader.close();
+						bw.close();
+						break;
+					default:
+						System.out.println("client side: unknown command received:");
+					}
+				}
+				else{
+					System.out.println("Not An Option");
+				}
+			}
+		}
+		else{
+			while(true){
+				System.out.println("1. Send a text message to the server: \n2. Send an image file to the server");
+				//Scanner in2= new Scanner(System.in);
+				int choice = in.nextInt();
+				
+				
+				//in2.close();
+				if(choice == 1 || choice == 2 ){
+					switch (choice) {
+					case 1:
+						System.out.println("Enter text message");
+						String text1 = in.next();
+						lc.sendText(text1, lc);
+						
+						break;
+					case 2:
+						System.out.println("Enter image file path");
+						String pic = in.next();
+						lc.sendImage(pic, lc);
+						
+						break;
+					default:
+						System.out.println("client side: unknown command received:");
+					}
+				}
+				else{
+					System.out.println("Not An Option");
+				}
+				
+				
+			}
+			
+		}
+		
+		
+		
+				
+		
 	} // end of main method
 
 } // end of ListClient
