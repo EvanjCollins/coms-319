@@ -87,37 +87,6 @@ public class AppClient {
 		}
 	}
 	
-	public void send() throws IOException{
-		while(true){
-			System.out.println("1. Send a text message to the server: \n2. Send an image file to the server");
-			Scanner in2= new Scanner(System.in);
-			int choice = in2.nextInt();
-			//AppClient lc = new AppClient();
-			
-			if(choice == 1 || choice == 2 ){
-				switch (choice) {
-				case 1:
-					System.out.println("Enter text message");
-					Scanner in3 =new Scanner(System.in);
-					String text1 = in3.next();
-					//lc.sendText(text1, lc);
-					break;
-				case 2:
-					System.out.println("Enter image file");
-					Scanner in4 =new Scanner(System.in);
-					String pic = in4.next();
-					//lc.sendText(pic, lc);
-					break;
-				default:
-					System.out.println("client side: unknown command received:");
-				}
-			}
-			else{
-				throw new IllegalArgumentException("not an option");
-			}
-		}
-	
-	}
 	
 	public void sendText(String text, AppClient ap) throws IOException{
 		PrintWriter out;
