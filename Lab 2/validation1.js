@@ -3,19 +3,31 @@ function validateForm() {
   var firstName = document.forms["userInput"].elements["firstName"].value;
   var result = validateText(firstName);
   if(result == true){
-    //place checkmark there
+    var image = document.createElement("IMG");
+    image.setAttribute("src", "correct.png");
+    var src = document.getElementById("firstName");
+    src.appendChild(image);
   }
   else{
-    //place big x
+    var image = document.createElement("IMG");
+    image.setAttribute("src", "wrong.png");
+    var src = document.getElementById("firstName");
+    src.appendChild(image);
   }
 
   var lastName = document.forms["userInput"].elements["lastName"].value;
   result = validateText(lastName);
   if(result == true){
-    //place checkmark there
+    var image = document.createElement("IMG");
+    image.setAttribute("src", "correct.png");
+    var src = document.getElementById("lastName");
+    src.appendChild(image);
   }
   else{
-    //place big x
+    var image = document.createElement("IMG");
+    image.setAttribute("src", "wrong.png");
+    var src = document.getElementById("lastName");
+    src.appendChild(image);
   }
 
 //  var gender = document.forms["userInput"].elements["gender"].value;
@@ -27,17 +39,16 @@ function validateForm() {
 
     function validateText(textInput){
       var bool = true;
+
       for(var i=0; i<textInput.length; i++){
         var value = textInput.charCodeAt(i);
         if(value < 48 || value > 122){
-          alert("WRONG");
           bool = false;
         }
-        else{
-          alert("TRUE");
-        }
+
       }
       return bool;
+
     }
 
 }
