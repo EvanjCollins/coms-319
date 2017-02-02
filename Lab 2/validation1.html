@@ -4,18 +4,20 @@
   Validation Form
 </title>
 
-<form>
+<script src="validation1.js"></script>
+
+<form name="userInput">
   First Name<br>
-  <input type="text" name="firstname"><br>
+  <input type="text" name="firstName"><br>
   Last Name<br>
-  <input type="text" name="lastname"><br>
+  <input type="text" name="lastName"><br>
   Gender<br>
-  <select name="Gender">
+  <select name="gender">
     <option value="Male">Male</option>
     <option value="Female">Female</option>
   </select><br>
   State<br>
-  <select name="State">
+  <select name="state">
     <option value="California">California</option>
     <option value="Florida">Florida</option>
     <option value="New York">New York</option>
@@ -27,7 +29,8 @@
     <option value="Iowa">Iowa</option>
     <option value="Arizona">Arizona</option>
   </select>
-
 </form>
+
+<button type="button" onclick="validateForm()">Continue</button>
 
 </html>
