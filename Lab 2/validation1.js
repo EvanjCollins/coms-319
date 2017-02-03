@@ -7,13 +7,26 @@ function validateForm() {
     var image = document.createElement("IMG");
     image.setAttribute("src", "correct.png");
     var src = document.getElementById("firstName");
-    src.appendChild(image);
+    if(src.hasChildNodes()){
+      src.removeChild(src.childNodes[0]);
+      src.appendChild(image);
+    }
+    else{
+      src.appendChild(image);
+    }
+
   }
   else{ // place X
     var image = document.createElement("IMG");
     image.setAttribute("src", "wrong.png");
     var src = document.getElementById("firstName");
-    src.appendChild(image);
+    if(src.hasChildNodes()){
+      src.removeChild(src.childNodes[0]);
+      src.appendChild(image);
+    }
+    else{
+      src.appendChild(image);
+    }
   }
 
   // validate last name
@@ -23,13 +36,25 @@ function validateForm() {
     var image = document.createElement("IMG");
     image.setAttribute("src", "correct.png");
     var src = document.getElementById("lastName");
-    src.appendChild(image);
+    if(src.hasChildNodes()){
+      src.removeChild(src.childNodes[0]);
+      src.appendChild(image);
+    }
+    else{
+      src.appendChild(image);
+    }
   }
   else{// place X
     var image = document.createElement("IMG");
     image.setAttribute("src", "wrong.png");
     var src = document.getElementById("lastName");
-    src.appendChild(image);
+    if(src.hasChildNodes()){
+      src.removeChild(src.childNodes[0]);
+      src.appendChild(image);
+    }
+    else{
+      src.appendChild(image);
+    }
   }
 
   // validate gender
@@ -39,13 +64,25 @@ function validateForm() {
     var image = document.createElement("IMG");
     image.setAttribute("src", "correct.png");
     var src = document.getElementById("gender");
-    src.appendChild(image);
+    if(src.hasChildNodes()){
+      src.removeChild(src.childNodes[0]);
+      src.appendChild(image);
+    }
+    else{
+      src.appendChild(image);
+    }
   }
   else{// place X
     var image = document.createElement("IMG");
     image.setAttribute("src", "wrong.png");
     var src = document.getElementById("gender");
-    src.appendChild(image);
+    if(src.hasChildNodes()){
+      src.removeChild(src.childNodes[0]);
+      src.appendChild(image);
+    }
+    else{
+      src.appendChild(image);
+    }
   }
 
   var state = document.forms["userInput"].elements["state"].value;
@@ -59,13 +96,25 @@ function validateForm() {
       var image = document.createElement("IMG");
       image.setAttribute("src", "correct.png");
       var src = document.getElementById("state");
-      src.appendChild(image);
+      if(src.hasChildNodes()){
+        src.removeChild(src.childNodes[0]);
+        src.appendChild(image);
+      }
+      else{
+        src.appendChild(image);
+      }
     }
     else{// place X
       var image = document.createElement("IMG");
       image.setAttribute("src", "wrong.png");
       var src = document.getElementById("state");
-      src.appendChild(image);
+      if(src.hasChildNodes()){
+        src.removeChild(src.childNodes[0]);
+        src.appendChild(image);
+      }
+      else{
+        src.appendChild(image);
+      }
     }
 
     function validateText(textInput){
