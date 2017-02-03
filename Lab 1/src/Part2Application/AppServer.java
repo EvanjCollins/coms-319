@@ -2,10 +2,12 @@ package Part2Application;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -22,12 +24,30 @@ public class AppServer implements Runnable{
 
 	Socket csocket;
 	int clientNum = 0;
-
+//	ArrayList<AppClientHandler> clientList;
 	protected int          serverPort   = 4444;
     protected ServerSocket serverSocket = null;
     protected boolean      isStopped    = false;
 	protected Thread       t= null;
-	AppServer(int port){
+	AppServer(int port) throws IOException{
+//		clientList = new ArrayList<AppClientHandler>();
+//        serverSocket = new ServerSocket(port);
+//
+//        Thread accept = new Thread() {
+//            public void run(){
+//                while(true){
+//                    try{
+//                    	clientNum++;
+//                        Socket s = serverSocket.accept();
+//                        clientList.add(new AppClientHandler(s,clientNum++));
+//                    }
+//                    catch(IOException e){ e.printStackTrace(); }
+//                }
+//            }
+//        };
+//        
+//        accept.setDaemon(true);
+//        accept.start();
 		this.serverPort = port;
 	}
 	/**
@@ -38,7 +58,6 @@ public class AppServer implements Runnable{
 	public static void main(String[] args) throws IOException {
 		AppServer server = new AppServer(4444);
 		new Thread(server).start();
-		
 		try {
 		    Thread.sleep(20 * 1000);
 		} catch (InterruptedException e) {
@@ -92,7 +111,7 @@ public class AppServer implements Runnable{
 		 try {
 			 this.serverSocket = new ServerSocket(this.serverPort);
 		 } catch (IOException e) {
-			 throw new RuntimeException("Cannot open port 8080", e);
+			 throw new RuntimeException("Cannot open port 4444", e);
 		 }
 	 }
 	 
@@ -139,13 +158,23 @@ class AppClientHandler implements Runnable {
 				try{
 					while((text = (String) in1.readObject()) != null){
 					if(text.contains("admin to all clients")){
-						broadcastMessage(text);
-						text = null;
+						 for (int i = 0, j = num; i <= j; i++) {
+							 Socket sclient = this.s; //get socket
+							 try{
+								 out = new PrintWriter(new BufferedOutputStream(sclient.getOutputStream()));
+							 }
+							 catch(IOException e){
+								 System.err.println("Caught io exception" + e.getMessage());
+							 }
+							 out.println("print all" + " penis");
+							 out.flush();
+							 out.close();
+						 }
 					}
 					if(text.contains("jpg")){
 						filepath = (String) in1.readObject();
 						image = (ImageIcon) in1.readObject();
-						handleImage(image,text);
+						handleImage(image,filepath,clientName);
 						image = null;
 						text = null;
 					}
@@ -189,9 +218,10 @@ class AppClientHandler implements Runnable {
 	}
 	
 	//handle image
-	void handleImage(ImageIcon img, String text) throws IOException {
-		File afile =new File("zebras.jpg");
- 	    File bfile =new File("E:/workspace/Coms319/Lab 1/images/zebras.jpg");
+	void handleImage(ImageIcon img, String text, String clientname) throws IOException {
+		File afile =new File(text);
+		String filename = clientname + "_" + (System.currentTimeMillis()/(10000)) ;
+ 	    File bfile =new File("E:/workspace/Coms319/Lab 1/images/" + filename);
 		FileInputStream inStream = new FileInputStream(afile);
 		FileOutputStream outStream = new FileOutputStream(bfile);
 	    int length;
@@ -199,35 +229,33 @@ class AppClientHandler implements Runnable {
 
 	    //copy the file content in bytes
 	    while ((length = inStream.read(buffer)) > 0){
-	    	
+	    	 
 	    	outStream.write(buffer, 0, length);
 
 	    }
 	    
 	    inStream.close();
 	    outStream.close();
-	    
-		System.out.println("Server Received:" );
-
+	    handleText("img " + filename);
 	}
 	
-	//Admin request to send message to all clients
-	 void broadcastMessage(String message) {
-
-		 for (int i = 0, j = num; i <= j; i++) {
-			 Socket socket = s; //get socket
-			 PrintWriter out= null; //get writer
-			 try {
-				 out = new PrintWriter(new BufferedWriter(
-        		  new OutputStreamWriter(socket.getOutputStream())), true); //initialize writer
-			 } catch (IOException e) {
-				 System.out.println("da fuck");
-				 e.printStackTrace();
-			 }
-			 
-			 out.println("print all" + message);
-			 out.flush();
-			 out.close();
-		 }
-	 }
+//	//Admin request to send message to all clients
+//	 void broadcastMessage(String message) {
+//
+//		 for (int i = 0, j = num; i <= j; i++) {
+//			 Socket socket = s; //get socket
+//			 PrintWriter out; //get writer
+//			 try {
+//				 out = new PrintWriter(new BufferedWriter(
+//        		 new OutputStreamWriter(socket.getOutputStream())), true); //initialize writer
+//			 } catch (IOException e) {
+//				 System.out.println("da fuck");
+//				 e.printStackTrace();
+//			 }
+//			 
+//			 out.println("print all" + message);
+//			 out.flush();
+//			 out.close();
+//		 }
+//	 }
 }

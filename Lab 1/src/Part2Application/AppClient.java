@@ -121,7 +121,16 @@ public class AppClient {
 	public static void main(String[] args) throws IOException {
 		System.out.println("Enter your name:");
 		Scanner in = new Scanner(System.in);
+		File fileinit = new File("chat.txt");
+		FileReader frinit = new FileReader(fileinit);
+		BufferedReader brinit = new BufferedReader(frinit);
+		String lineinit;
 		int count = 0;
+		while((lineinit = brinit.readLine()) != null)
+		{
+			if(!lineinit.contains("img")) count++; //check to see if image
+		}
+		brinit.close();
 		String clientName = in.next();
 
 		
@@ -152,8 +161,8 @@ public class AppClient {
 						br.close();			
 						break;
 					case 3:
-						System.out.println("Which message would you like to delete");
-						String message = in.next() + in.nextLine();
+						System.out.println("Which line number:");
+						String message = in.next();
 						File file1 = new File("chat.txt");
 						File file2 = new File("chattemp.txt");
 						FileReader fread = new FileReader(file1);
@@ -164,12 +173,18 @@ public class AppClient {
 						boolean match = false;
 						int i = 1;
 						while((line1 = reader.readLine()) != null){
-								String history = line1.substring(3,line1.length());
-								match = (history.matches(message));
+								String history = line1.substring(3, line1.length());
+								String linenum = line1.substring(0,1);
+								match = (linenum.matches(message));
 								if(!(match == true)){
+									if(line1.contains("img")){
+										bw.write(line1 + "\n");
+									}
+									else{
 									bw.write(i + ": " + history + "\n");
 									bw.flush();
 									i++;
+									}
 								}
 								else{
 									continue;
