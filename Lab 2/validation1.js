@@ -50,7 +50,7 @@ function validateForm() {
 
   var state = document.forms["userInput"].elements["state"].value;
     // must be entered
-    // save to local storage???
+    // save to local storage????
     if(state == "California" || state == "Florida"
     || state == "New York" || state == "Texas"
     || state == "Hawaii" || state == "Washington"
