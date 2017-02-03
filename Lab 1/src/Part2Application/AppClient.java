@@ -93,30 +93,28 @@ public class AppClient {
 	
 	
 	public void send(String text, AppClient ap, boolean admin, boolean image, int count) throws IOException{
-		if(image = true){
 			ObjectOutputStream out1;
 			out1 = ap.out1;
-			if(admin == true){
-				out1.writeObject(image);
-				out1.writeObject("admin to all clients:" + text);
-				out1.flush();
-			}
-			else if(image == false){
+			if(image == true){
 				File pic1 = new File(text);
 				String filepath = pic1.getAbsolutePath();
 				if(pic1.isFile() == true){
 					ImageIcon img = new ImageIcon(ImageIO.read(pic1));
-					out1.writeObject(image);
-					out1.writeObject(filepath);
 					out1.writeObject("jpg");
+					out1.writeObject(filepath);
 					out1.writeObject(img);
 					out1.flush();
 				}
 			}
 			else{
-				out1.writeObject(count + ": " + text);
-				out1.flush();
-			}
+				if(admin == true){
+					out1.writeObject("admin to all clients");
+					out1.flush();
+				}
+				else{
+					out1.writeObject(count + ": " + text);
+					out1.flush();
+				}
 			}
 		}
 

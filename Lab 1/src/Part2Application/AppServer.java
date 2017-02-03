@@ -131,46 +131,49 @@ class AppClientHandler implements Runnable {
 			ImageIcon image; //image object
 			clientName = text; //clientName
 			text = null;
-			boolean poopoo;
+			String filepath = null;
 			System.out.println(clientName + " Connected!"); //debugging line
 			//KEEP LISTENING AND RESPONDING TO CLIENT REQUESTS
-			while(true){
+			while(true)
 				//check first for text or image
-				
-				while(!(poopoo = in1.readBoolean())){
-					
-					if(text == "admin to all clients"){
+				try{
+					while((text = (String) in1.readObject()) != null){
+					if(text.contains("admin to all clients")){
 						broadcastMessage(text);
+						text = null;
+					}
+					if(text.contains("jpg")){
+						filepath = (String) in1.readObject();
+						image = (ImageIcon) in1.readObject();
+						handleImage(image,text);
+						image = null;
 						text = null;
 					}
 					else{
 						//blocking call waits for additional input
 						handleText(text);
-						text = null;
 					}
-				} 
-				while(poopoo = in1.readBoolean()){
-							text = (String) in1.readObject();
-							image = (ImageIcon) in1.readObject();
-							handleImage(image, text);
-							image = null;
-							text = null;
-						
-				} 
-				
-				
-			}
+					}
 			
 			
 			} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+				System.err.println("Caught IOException: " + e.getMessage());
+			} catch (ClassCastException e) {
+				System.err.println("Caught ClassCastException: " + e.getMessage());
+				continue;
+			} catch (ClassNotFoundException e) {
+				continue;
+			}
 			
-			e.printStackTrace();
-		}
 		
 		// This handling code dies after doing all the printing
-	}
+		} catch (IOException e1) {
+			System.err.println("Caught IO Exception:" + e1.getMessage());
+		}finally{
+			
+		}
+}
+
 	
 	//handle text message
 	void handleText(String s) throws IOException {
