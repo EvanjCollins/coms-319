@@ -24,8 +24,6 @@ import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import com.sun.jndi.ldap.Connection;
-import com.sun.org.apache.xml.internal.security.exceptions.Base64DecodingException;
-import com.sun.org.apache.xml.internal.security.utils.Base64;
 
 public class AppClient {
 
@@ -58,7 +56,6 @@ public class AppClient {
 		
 		try {
 			out = new PrintWriter(new BufferedOutputStream(serverSocket.getOutputStream()));
-			
 			//object output stream
 			out1 = new ObjectOutputStream(serverSocket.getOutputStream());
 			
@@ -95,36 +92,33 @@ public class AppClient {
 	}
 	
 	
-	public void sendText(String text, AppClient ap, boolean admin, int count) throws IOException{
-		PrintWriter out;
-		out = ap.out;
-		if(admin == true){
-			out.println("admin to all clients:" + text);
-			out.flush();
-		}
-		else{
-			out.println(count + ": " + text);
-			out.flush();
-		}
-	}
-
-	public void sendImage(String pic, AppClient ap) throws IOException{
-		if(pic != null){
-			
+	public void send(String text, AppClient ap, boolean admin, boolean image, int count) throws IOException{
+		if(image = true){
 			ObjectOutputStream out1;
 			out1 = ap.out1;
-			File pic1 = new File(pic);
-			
-			if(pic1.isFile() == true){
-				ImageIcon img = new ImageIcon(ImageIO.read(pic1));
-				out1.writeObject(img);
+			if(admin == true){
+				out1.writeObject(image);
+				out1.writeObject("admin to all clients:" + text);
 				out1.flush();
 			}
+			else if(image == false){
+				File pic1 = new File(text);
+				String filepath = pic1.getAbsolutePath();
+				if(pic1.isFile() == true){
+					ImageIcon img = new ImageIcon(ImageIO.read(pic1));
+					out1.writeObject(image);
+					out1.writeObject(filepath);
+					out1.writeObject("jpg");
+					out1.writeObject(img);
+					out1.flush();
+				}
+			}
+			else{
+				out1.writeObject(count + ": " + text);
+				out1.flush();
+			}
+			}
 		}
-		else{
-			System.out.println("invalid file");
-		}
-	}
 
 	public static void main(String[] args) throws IOException {
 		System.out.println("Enter your name:");
@@ -145,7 +139,7 @@ public class AppClient {
 					case 1:
 						System.out.println("What's the message for the other clients?");
 						String message1 = in.next();
-						lc.sendText(message1, lc, true, 0);
+						lc.send(message1, lc, true, false, 0);
 						break;
 					case 2:
 						File file = new File("chat.txt");
@@ -160,24 +154,33 @@ public class AppClient {
 						br.close();			
 						break;
 					case 3:
-						System.out.println("Which line number would you like to delete:");
-						String message = in.next();
-						String charset = "UTF-8";
+						System.out.println("Which message would you like to delete");
+						String message = in.next() + in.nextLine();
 						File file1 = new File("chat.txt");
-						File temp = File.createTempFile("file", ".txt", file1.getParentFile());
-						BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file1), charset));
-						BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(temp), charset));
+						File file2 = new File("chattemp.txt");
+						FileReader fread = new FileReader(file1);
+						FileWriter fw = new FileWriter(file2);
+						BufferedReader reader = new BufferedReader(fread);
+						BufferedWriter bw = new BufferedWriter(fw);
 						String line1;
+						boolean match = false;
+						int i = 1;
 						while((line1 = reader.readLine()) != null){
-							if(line1.contains(message)){
-								line1 = line1.replace(message, "");
-								bw.write(line1);
-							}
+								String history = line1.substring(3,line1.length());
+								match = (history.matches(message));
+								if(!(match == true)){
+									bw.write(i + ": " + history + "\n");
+									bw.flush();
+									i++;
+								}
+								else{
+									continue;
+								}
 						}
-						file1.delete();
-						temp.renameTo(file1);
 						reader.close();
 						bw.close();
+						file1.delete();
+						file2.renameTo(file1);
 						break;
 					default:
 						System.out.println("client side: unknown command received:");
@@ -189,28 +192,25 @@ public class AppClient {
 				}
 			}
 		}
-		
+		 
 		
 		else{
 			while(true){
-				System.out.println("1. Send a text message to the server: \n2. Send an image file to the server \n3. Logout");
+				System.out.println("1. Send a text message to the server: \n2. Send an image file to the server");
 				int choice = in.nextInt();
 				
-				if(choice == 1 || choice == 2 || choice == 3){
+				if(choice == 1 || choice == 2){
 					switch (choice) {
 					case 1:
 						System.out.println("Enter text message");
 						String text1 = in.next();
 						count++;
-						lc.sendText(text1, lc, false,count);
+						lc.send(text1, lc, false, false, count);
 						break;
 					case 2:
 						System.out.println("Enter image file path");
 						String pic = in.next();
-						lc.sendImage(pic, lc);
-						break;
-					case 3:
-						lc.sendText("logout", lc, false,0);
+						lc.send(pic, lc, false, true, count);
 						break;
 					default:
 						System.out.println("client side: unknown command received:");
@@ -245,14 +245,18 @@ class ServerListener implements Runnable {
 	@Override
 	public void run() {
 		while (true) { // run forever
-			try {
+			/**try {
+				
 				String cmd = in.next();
 				String s = in.nextLine();
 				lc.handleMessage(cmd, s);
-			} catch (IOException e) {
+				**/
+				String s = in.nextLine(); //blocking call
+				System.out.println(s);
+			/**} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}
+			}**/
 		}
 
 	}

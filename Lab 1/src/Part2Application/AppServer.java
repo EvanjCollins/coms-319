@@ -36,8 +36,6 @@ public class AppServer implements Runnable{
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		PrintWriter pw = new PrintWriter("chat.txt");
-		pw.close();
 		AppServer server = new AppServer(4444);
 		new Thread(server).start();
 		
@@ -122,7 +120,7 @@ class AppClientHandler implements Runnable {
 	//	
 		try {
 			//GET SOCKET IN/OUT STREAMS
-			in = new Scanner(new BufferedInputStream(s.getInputStream())); 
+			in = new Scanner(new BufferedInputStream(s.getInputStream()));
 			out = new PrintWriter(new BufferedOutputStream(s.getOutputStream()));
 			in1 = new ObjectInputStream(s.getInputStream());
 
@@ -132,31 +130,39 @@ class AppClientHandler implements Runnable {
 			String text = in.nextLine(); //blocking call waits for input from client (receives client name)
 			ImageIcon image; //image object
 			clientName = text; //clientName
+			text = null;
+			boolean poopoo;
 			System.out.println(clientName + " Connected!"); //debugging line
-			
 			//KEEP LISTENING AND RESPONDING TO CLIENT REQUESTS
 			while(true){
 				//check first for text or image
-				if((text = in.nextLine()).getClass() == String.class){
+				
+				while(!(poopoo = in1.readBoolean())){
+					
 					if(text == "admin to all clients"){
 						broadcastMessage(text);
-					}
-					else if(text == "logout"){
-						out.println("exit");
-						out.flush();
+						text = null;
 					}
 					else{
-					 //blocking call waits for additional input
-					handleText(text);
+						//blocking call waits for additional input
+						handleText(text);
+						text = null;
 					}
-				}
-				else if((image = (ImageIcon) in1.readObject()).getClass() == ImageIcon.class){
-					handleImage(image);
-				}
+				} 
+				while(poopoo = in1.readBoolean()){
+							text = (String) in1.readObject();
+							image = (ImageIcon) in1.readObject();
+							handleImage(image, text);
+							image = null;
+							text = null;
+						
+				} 
+				
+				
 			}
 			
 			
-		} catch (IOException e) {
+			} catch (IOException e) {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			
@@ -180,7 +186,7 @@ class AppClientHandler implements Runnable {
 	}
 	
 	//handle image
-	void handleImage(ImageIcon img) throws IOException {
+	void handleImage(ImageIcon img, String text) throws IOException {
 		File afile =new File("zebras.jpg");
  	    File bfile =new File("E:/workspace/Coms319/Lab 1/images/zebras.jpg");
 		FileInputStream inStream = new FileInputStream(afile);
@@ -198,7 +204,7 @@ class AppClientHandler implements Runnable {
 	    inStream.close();
 	    outStream.close();
 	    
-		System.out.println("Server Received: blah" );
+		System.out.println("Server Received:" );
 
 	}
 	
