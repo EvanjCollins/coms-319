@@ -2,20 +2,16 @@ package Part2Application;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import javax.swing.ImageIcon;
@@ -157,9 +153,9 @@ class AppClientHandler implements Runnable {
 				//check first for text or image
 				try{
 					while((text = (String) in1.readObject()) != null){
-					if(text.contains("admin to all clients")){
+					if(text.contains("admin to all clients")){ 
 						 for (int i = 0, j = num; i <= j; i++) {
-							 Socket sclient = this.s; //get socket
+							 Socket sclient = s; //get socket
 							 try{
 								 out = new PrintWriter(new BufferedOutputStream(sclient.getOutputStream()));
 							 }

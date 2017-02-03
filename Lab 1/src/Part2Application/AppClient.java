@@ -4,17 +4,11 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.ObjectOutput;
 import java.io.ObjectOutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -70,7 +64,10 @@ public class AppClient {
 
 
 	}
-
+	
+	/*
+	 * Handle message being broadcast to all clients
+	 */
 	public void handleMessage(String cmd, String s) throws IOException {
 		switch (cmd) {
 		case "print all":
@@ -91,7 +88,10 @@ public class AppClient {
 		}
 	}
 	
-	
+	/*
+	 * Send an image or text through ObjectOutputStream to server.
+	 * 
+	 */
 	public void send(String text, AppClient ap, boolean admin, boolean image, int count) throws IOException{
 			ObjectOutputStream out1;
 			out1 = ap.out1;
@@ -118,6 +118,8 @@ public class AppClient {
 			}
 		}
 
+
+		
 	public static void main(String[] args) throws IOException {
 		System.out.println("Enter your name:");
 		Scanner in = new Scanner(System.in);
