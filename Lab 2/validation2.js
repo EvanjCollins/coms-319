@@ -46,20 +46,39 @@ function validateForm(){
 
   // validate phone
   var validated = true;
-  if(phone.length == 9){
-
+  if(phone.length == 10){
+    var tmp = validateNumbers(phone);
+    if(tmp == false){
+      validated = false;
+    }
   }
-  else if(phone.length == 11){
+  else if(phone.length == 0){// validate no phone number since it isn't required
+    validated = true;
+  }
+  else if(phone.length == 12){
+    var withoutDash = phone.split("-");
+
+    if(withoutDash.length == 3){
+      var withoutDashWhole = withoutDash[0] + withoutDash[1] + withoutDash[2];
+      var boolean = validateNumbers(withoutDashWhole);
+      if(boolean == false){
+        validated = false;
+      }
+
+    }
+    else{
+      validated = false;
+    }
 
   }
   else{
     validated = false;
   }
 
-  if(validated){
+  if(validated == true){
     var image = document.createElement("IMG");
     image.setAttribute("src", "correct.png");
-    var src = document.getElementById("emailDiv");
+    var src = document.getElementById("phoneDiv");
     if(src.hasChildNodes()){
       src.removeChild(src.childNodes[0]);
       src.appendChild(image);
@@ -80,6 +99,11 @@ function validateForm(){
       src.appendChild(image);
     }
   }
+
+
+  // validate address
+
+
 
   function validateText(textInput){
     var bool = true;
