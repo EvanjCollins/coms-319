@@ -45,7 +45,41 @@ function validateForm(){
   }
 
   // validate phone
-  
+  var validated = true;
+  if(phone.length == 9){
+
+  }
+  else if(phone.length == 11){
+
+  }
+  else{
+    validated = false;
+  }
+
+  if(validated){
+    var image = document.createElement("IMG");
+    image.setAttribute("src", "correct.png");
+    var src = document.getElementById("emailDiv");
+    if(src.hasChildNodes()){
+      src.removeChild(src.childNodes[0]);
+      src.appendChild(image);
+    }
+    else{
+      src.appendChild(image);
+    }
+  }
+  else{
+    var image = document.createElement("IMG");
+    image.setAttribute("src", "wrong.png");
+    var src = document.getElementById("phoneDiv");
+    if(src.hasChildNodes()){
+      src.removeChild(src.childNodes[0]);
+      src.appendChild(image);
+    }
+    else{
+      src.appendChild(image);
+    }
+  }
 
   function validateText(textInput){
     var bool = true;
@@ -62,5 +96,22 @@ function validateForm(){
     }
     return bool;
 
+  }
+
+  function validateNumbers(textInput){
+    var bool = true;
+
+    if(textInput == ""){
+      return false;
+    }
+
+    for(var i=0; i<textInput.length; i++){
+      var value = textInput.charCodeAt(i);
+      if(value < 48 || value > 57){
+        bool = false;
+      }
+
+    }
+    return bool;
   }
 }
