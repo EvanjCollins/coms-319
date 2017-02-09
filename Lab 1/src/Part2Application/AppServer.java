@@ -31,24 +31,6 @@ public class AppServer implements Runnable{
     protected boolean      isStopped    = false; //is thread stopped?
 	protected Thread       t= null; //init thread
 	AppServer(int port) throws IOException{
-//		clientList = new ArrayList<AppClientHandler>();
-//        serverSocket = new ServerSocket(port);
-//
-//        Thread accept = new Thread() {
-//            public void run(){
-//                while(true){
-//                    try{
-//                    	clientNum++;
-//                        Socket s = serverSocket.accept();
-//                        clientList.add(new AppClientHandler(s,clientNum++));
-//                    }
-//                    catch(IOException e){ e.printStackTrace(); }
-//                }
-//            }
-//        };
-//        
-//        accept.setDaemon(true);
-//        accept.start();
 		this.serverPort = port;
 	}
 	
@@ -176,20 +158,20 @@ class AppClientHandler implements Runnable {
 					//check if object is a string that is not null
 					while((text = (String) in1.readObject()) != null){
 					//attempt to broadcast to clients	
-					if(text.contains("admin to all clients")){ 
-						 for (int i = 0, j = num; i <= j; i++) {
-							 Socket sclient = s; //get socket, don't know how to switch client socket!!
-							 try{
-								 out = new PrintWriter(new BufferedOutputStream(sclient.getOutputStream()));
-							 }
-							 catch(IOException e){
-								 System.err.println("Caught io exception" + e.getMessage());
-							 }
-							 out.println("print all" + " penis");
-							 out.flush();
-							 out.close();
-						 }
-					}
+//					if(text.contains("admin to all clients")){ 
+//						 for (int i = 0, j = num; i <= j; i++) {
+//							 Socket sclient = s; //get socket, don't know how to switch client socket!!
+//							 try{
+//								 out = new PrintWriter(new BufferedOutputStream(sclient.getOutputStream()));
+//							 }
+//							 catch(IOException e){
+//								 System.err.println("Caught io exception" + e.getMessage());
+//							 }
+//							 out.println("print all" + " penis");
+//							 out.flush();
+//							 out.close();
+//						 }
+//					}
 					//if object is an image
 					if(text.contains("jpg")){
 						//file path of image
