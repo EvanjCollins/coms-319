@@ -124,7 +124,7 @@ public class AppClient {
 
 
 	/*
-	 * Main method
+	 * Main method`
 	 * Gets your name, send to client and try for a connection. Gets the last number of the chat history file to use as count.
 	 * If your name is admin, goes to special admin menu
 	 * else gives you option to send text message or image
