@@ -148,7 +148,4 @@ function validateForm() {
       //if all parts are valid go to next page
       self.location = "validation2.html";
     }
-    else{
-      //do nothing, need to revalidate
-    }
 }
