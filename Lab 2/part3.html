@@ -15,7 +15,7 @@
 
 
 <script type="text/javascript">
-  var moving = false;
+  var moving;
   var direction = {
     RIGHT : {value: 0, name: "Right"},
     LEFT: {value: 1, name: "Left"},
@@ -25,23 +25,59 @@
   var curDir = direction.RIGHT;
   var canvas = document.getElementById("snakeScreen");
   var drawingObject = canvas.getContext("2d");
-  ctx.fillStyle = "#FF0000";
+  drawingObject.strokeStyle = "red";
+  drawingObject.lineWidth = 3;
   var xCord = 0;
   var yCord = 25;
+  var timer;
 
-  var timer = setInterval(function() {
-    //document.getElementById("here").innerHTML = i--;
-    //make snake move
-  }, 1000)
+  //drawingObject.moveTo(xCord, yCord);
 
   function startStop(){
-    if(moving == false){
-      timer.setInterval(move(), 500);
+    if(moving == false || moving == null){
       moving = true;
+      timer = setInterval(function(){
+        drawingObject.moveTo(xCord, yCord);
+        if(curDir == direction.RIGHT){
+          xCord += 3;
+          if(xCord >= 1000){
+            startStop();
+            xCord = 1000;
+          }
+
+        }
+        else if(curDir == direction.UP){
+          yCord -=3;
+          if(yCord <= 0){
+            startStop();
+            yCord = 0;
+          }
+
+        }
+        else if(curDir == direction.LEFT){
+          xCord -= 3;
+          if(xCord <= 0){
+            startStop();
+            xCord = 0;
+          }
+
+        }
+        else{
+          yCord += 3;
+          if(yCord >= 600){
+            startStop();
+            yCord = 600;
+          }
+
+
+        }
+        drawingObject.lineTo(xCord, yCord);
+        drawingObject.stroke();
+      }, 100);
     }
     else{
-      clearInterval(timer);
       moving = false;
+      clearInterval(timer);
     }
   }
 
