@@ -2,16 +2,78 @@
 <body>
 
 
-<h1><p id="header">COUNTDOWN IN SECONDS</p>
-<p id="here"></p></h1>
-<input type="button" onclick="clearInterval(timer)" value="STOP COUNTDOWN">
+<h1>
+  <p><input type="button" id="start" onclick="startStop()" value="Start">
+        <input type="button" id="turnLeft" onclick="turnLeft()" value="Turn Left">
+        <input type="button" id="turnRight" onclick="turnRight()" value="Turn Right">
+  </p>
+  <p id="here"></p>
+</h1>
+<p>
+  <canvas id="snakeScreen" width="1000" height="600" style="border:1px solid #000000;"></canvas>
+</p>
 
 
 <script type="text/javascript">
-  var i = 100;
+  var moving = false;
+  var direction = {
+    RIGHT : {value: 0, name: "Right"},
+    LEFT: {value: 1, name: "Left"},
+    UP : {value: 2, name: "Up"},
+    DOWN : {value: 3, name: "Down"}
+  };
+  var curDir = direction.RIGHT;
+  var canvas = document.getElementById("snakeScreen");
+  var drawingObject = canvas.getContext("2d");
+  ctx.fillStyle = "#FF0000";
+  var xCord = 0;
+  var yCord = 25;
+
   var timer = setInterval(function() {
-    document.getElementById("here").innerHTML = i--;
+    //document.getElementById("here").innerHTML = i--;
+    //make snake move
   }, 1000)
+
+  function startStop(){
+    if(moving == false){
+      timer.setInterval(move(), 500);
+      moving = true;
+    }
+    else{
+      clearInterval(timer);
+      moving = false;
+    }
+  }
+
+  function turnLeft(){
+    if(curDir == direction.RIGHT){
+      curDir = direction.UP;
+    }
+    else if(curDir == direction.UP){
+      curDir = direction.LEFT;
+    }
+    else if(curDir == direction.LEFT){
+      curDir = direction.DOWN;
+    }
+    else{
+      curDir = direction.RIGHT;
+    }
+  }
+
+  function turnRight(){
+    if(curDir == direction.RIGHT){
+      curDir = direction.DOWN;
+    }
+    else if(curDir == direction.UP){
+      curDir = direction.RIGHT;
+    }
+    else if(curDir == direction.LEFT){
+      curDir = direction.UP;
+    }
+    else{
+      curDir = direction.LEFT;
+    }
+  }
 
 </script>
 
