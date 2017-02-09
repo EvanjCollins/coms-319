@@ -1,137 +1,74 @@
-function validateForm() {
+var mytime;
+var choice = ' ';
+var direction = 'right';
+var c = document.getElementById('canvasId');
+var ctx = c.getContext('2d');
 
-  // validate first name
-  var firstName = document.forms["userInput"].elements["firstName"].value;
-  var result = validateText(firstName);
-  if(result == true){ // place check
-    var image = document.createElement("IMG");
-    image.setAttribute("src", "correct.png");
-    var src = document.getElementById("firstName");
-    if(src.hasChildNodes()){
-      src.removeChild(src.childNodes[0]);
-      src.appendChild(image);
-    }
+
+function startstopTime(){
+    var elem = document.getElementById("timebutton");
+
+    if (elem.value == "Start"){ 
+		elem.value = "Stop";
+	    mytime = setInterval(drawLine, 100);
+	}
     else{
-      src.appendChild(image);
-    }
-
-  }
-  else{ // place X
-    var image = document.createElement("IMG");
-    image.setAttribute("src", "wrong.png");
-    var src = document.getElementById("firstName");
-    if(src.hasChildNodes()){
-      src.removeChild(src.childNodes[0]);
-      src.appendChild(image);
-    }
-    else{
-      src.appendChild(image);
-    }
-  }
-
-  // validate last name
-  var lastName = document.forms["userInput"].elements["lastName"].value;
-  result = validateText(lastName);
-  if(result == true){// place check
-    var image = document.createElement("IMG");
-    image.setAttribute("src", "correct.png");
-    var src = document.getElementById("lastName");
-    if(src.hasChildNodes()){
-      src.removeChild(src.childNodes[0]);
-      src.appendChild(image);
-    }
-    else{
-      src.appendChild(image);
-    }
-  }
-  else{// place X
-    var image = document.createElement("IMG");
-    image.setAttribute("src", "wrong.png");
-    var src = document.getElementById("lastName");
-    if(src.hasChildNodes()){
-      src.removeChild(src.childNodes[0]);
-      src.appendChild(image);
-    }
-    else{
-      src.appendChild(image);
-    }
-  }
-
-  // validate gender
-  var gender = document.forms["userInput"].elements["gender"].value;
-    // must be entered
-  if(gender == "Female" || gender == "Male"){// place check
-    var image = document.createElement("IMG");
-    image.setAttribute("src", "correct.png");
-    var src = document.getElementById("gender");
-    if(src.hasChildNodes()){
-      src.removeChild(src.childNodes[0]);
-      src.appendChild(image);
-    }
-    else{
-      src.appendChild(image);
-    }
-  }
-  else{// place X
-    var image = document.createElement("IMG");
-    image.setAttribute("src", "wrong.png");
-    var src = document.getElementById("gender");
-    if(src.hasChildNodes()){
-      src.removeChild(src.childNodes[0]);
-      src.appendChild(image);
-    }
-    else{
-      src.appendChild(image);
-    }
-  }
-
-  var state = document.forms["userInput"].elements["state"].value;
-    // must be entered
-    // save to local storage????
-    if(state == "California" || state == "Florida"
-    || state == "New York" || state == "Texas"
-    || state == "Hawaii" || state == "Washington"
-    || state == "Colorado" || state == "Virginia"
-    || state == "Iowa" || state == "Arizona"){// place check
-      var image = document.createElement("IMG");
-      image.setAttribute("src", "correct.png");
-      var src = document.getElementById("state");
-      if(src.hasChildNodes()){
-        src.removeChild(src.childNodes[0]);
-        src.appendChild(image);
-      }
-      else{
-        src.appendChild(image);
-      }
-    }
-    else{// place X
-      var image = document.createElement("IMG");
-      image.setAttribute("src", "wrong.png");
-      var src = document.getElementById("state");
-      if(src.hasChildNodes()){
-        src.removeChild(src.childNodes[0]);
-        src.appendChild(image);
-      }
-      else{
-        src.appendChild(image);
-      }
-    }
-
-    function validateText(textInput){
-      var bool = true;
-
-      if(textInput == ""){
-        return false;
-      }
-      for(var i=0; i<textInput.length; i++){
-        var value = textInput.charCodeAt(i);
-        if(value < 48 || value > 122){
-          bool = false;
-        }
-
-      }
-      return bool;
-
-    }
-
+		elem.value = "Start";
+		clearInterval(mytime);
+	}
 }
+
+//move left or right
+function setLeftorRight(choice){
+	choose = choice;
+	if(choose == 'right'){
+		if(direction == 'up'){
+			ctx.translate(1,0);
+			direction = 'right';
+		}
+		else if(direction == 'down'){
+			ctx.translate(-1,0);
+			direction = 'left';		
+		}
+		else if(direction == 'left'){
+			ctx.translate(0,1);
+			direction = 'up';
+		}
+		else if(direction == 'right'){
+			ctx.translate(0,-1);
+			direction = 'down';	
+		}
+	}
+	else if(choose == 'left'){
+		if(direction == 'up'){
+			ctx.translate(-1,0);
+			direction = 'left';
+		}
+		else if(direction == 'down'){
+			ctx.translate(1,0);
+			direction = 'right';		
+		}
+		else if(direction == 'left'){
+			ctx.translate(0,-1);
+			direction = 'down';
+		}
+		else if(direction == 'right'){
+			ctx.translate(0,1);
+			direction == 'up';	
+		}
+	}
+	else if(choose == ' '){
+		ctx.translate(1,0);
+	}
+}
+
+function drawLine(){
+	ctx.lineWidth = 3;	
+	ctx.beginPath();
+	setLeftorRight(choice);
+    ctx.strokeStyle = 'red';
+    ctx.moveTo(0, 200);
+    ctx.lineTo(0, 203);
+    ctx.stroke();
+}
+

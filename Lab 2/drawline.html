@@ -1,26 +1,22 @@
 <html>
 
-<title>
-  Snake
-</title>
-
-
-<body>
-	
-<h1><p id="header">COUNTDOWN IN SECONDS</p>
-<p id="here"></p> </h1>
-    <input id="btn" onclick="clearInterval(timer)" value="STOP COUNTDOWN" />
-	<input id="left" type="left" value="left" />
-	<input id="right" type="right" value="right" />
+	<title>
+		Draw line
+	</title>
 	
 
-	<script
-		var i = 100;
-		var timer = setInterval(function(){
-			document.getElementById("here"),innerHTML = i--;
-		}, 1000)
+	  
+	<body>
 	
-	</script>
 
-<body>
+		
+		<input id="timebutton" type="button" value="Start" onclick="startstopTime()" ></input>
+		<input type="button" id="Leftbutt" value="Left" onclick="choice = 'left'"></input>
+		<input type="button" id="Rightbutt" value="Right" onclick="choice = 'right'"></input>
+		
+		<canvas id="canvasId" width="500" height="500" style="border:1px solid #000000;"></canvas>
+
+		<script src = "drawline.js" </script>
+
+	<body>
 </html>
