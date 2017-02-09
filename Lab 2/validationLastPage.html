@@ -1,19 +1,16 @@
 <html>
 <head>
-  <script type='text/javascript' src='https://www.gstatic.com/charts/loader.js'></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <script type='text/javascript'>
    google.charts.load('upcoming', {'packages': ['geomap']});
    google.charts.setOnLoadCallback(drawMap);
 
+   var address = localStorage.address;
+
     function drawMap() {
       var data = google.visualization.arrayToDataTable([
-        ['City', 'Popularity'],
-        ['New York', 200],
-        ['Boston', 300],
-        ['Miami', 400],
-        ['Chicago', 500],
-        ['Los Angeles', 600],
-        ['Houston', 700]
+        ['Address', 'Popularity'],
+        [address, 200],
       ]);
 
       var options = {};
