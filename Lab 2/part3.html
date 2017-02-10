@@ -3,9 +3,9 @@
 
 
 <h1>
-  <p><input type="button" id="start" onclick="startStop()" value="Start">
-        <input type="button" id="turnLeft" onclick="turnLeft()" value="Turn Left">
-        <input type="button" id="turnRight" onclick="turnRight()" value="Turn Right">
+  <p> <input type="button" id="start" onclick="startStop()" value="Start">
+      <input type="button" id="turnLeft" onclick="turnLeft()" value="Turn Left">
+      <input type="button" id="turnRight" onclick="turnRight()" value="Turn Right">
   </p>
   <p id="here"></p>
 </h1>
@@ -36,6 +36,8 @@
   function startStop(){
     if(moving == false || moving == null){
       moving = true;
+      var button = document.getElementById("start");
+      button.value = "Stop";
       timer = setInterval(function(){
         drawingObject.moveTo(xCord, yCord);
         if(curDir == direction.RIGHT){
@@ -76,6 +78,8 @@
       }, 100);
     }
     else{
+      var button = document.getElementById("start");
+      button.value = "Start";
       moving = false;
       clearInterval(timer);
     }
