@@ -1,0 +1,121 @@
+<html>
+<body>
+
+
+<h1>
+  <p> <input type="button" id="start" onclick="startStop()" value="Start">
+      <input type="button" id="turnLeft" onclick="turnLeft()" value="Turn Left">
+      <input type="button" id="turnRight" onclick="turnRight()" value="Turn Right">
+  </p>
+  <p id="here"></p>
+</h1>
+<p>
+  <canvas id="snakeScreen" width="1000" height="600" style="border:1px solid #000000;"></canvas>
+</p>
+
+
+<script type="text/javascript">
+  var moving;
+  var direction = {
+    RIGHT : {value: 0, name: "Right"},
+    LEFT: {value: 1, name: "Left"},
+    UP : {value: 2, name: "Up"},
+    DOWN : {value: 3, name: "Down"}
+  };
+  var curDir = direction.RIGHT;
+  var canvas = document.getElementById("snakeScreen");
+  var drawingObject = canvas.getContext("2d");
+  drawingObject.strokeStyle = "red";
+  drawingObject.lineWidth = 3;
+  var xCord = 0;
+  var yCord = 25;
+  var timer;
+
+  //drawingObject.moveTo(xCord, yCord);
+
+  function startStop(){
+    if(moving == false || moving == null){
+      moving = true;
+      var button = document.getElementById("start");
+      button.value = "Stop";
+      timer = setInterval(function(){
+        drawingObject.moveTo(xCord, yCord);
+        if(curDir == direction.RIGHT){
+          xCord += 3;
+          if(xCord >= 1000){
+            startStop();
+            xCord = 1000;
+          }
+
+        }
+        else if(curDir == direction.UP){
+          yCord -=3;
+          if(yCord <= 0){
+            startStop();
+            yCord = 0;
+          }
+
+        }
+        else if(curDir == direction.LEFT){
+          xCord -= 3;
+          if(xCord <= 0){
+            startStop();
+            xCord = 0;
+          }
+
+        }
+        else{
+          yCord += 3;
+          if(yCord >= 600){
+            startStop();
+            yCord = 600;
+          }
+
+
+        }
+        drawingObject.lineTo(xCord, yCord);
+        drawingObject.stroke();
+      }, 100);
+    }
+    else{
+      var button = document.getElementById("start");
+      button.value = "Start";
+      moving = false;
+      clearInterval(timer);
+    }
+  }
+
+  function turnLeft(){
+    if(curDir == direction.RIGHT){
+      curDir = direction.UP;
+    }
+    else if(curDir == direction.UP){
+      curDir = direction.LEFT;
+    }
+    else if(curDir == direction.LEFT){
+      curDir = direction.DOWN;
+    }
+    else{
+      curDir = direction.RIGHT;
+    }
+  }
+
+  function turnRight(){
+    if(curDir == direction.RIGHT){
+      curDir = direction.DOWN;
+    }
+    else if(curDir == direction.UP){
+      curDir = direction.RIGHT;
+    }
+    else if(curDir == direction.LEFT){
+      curDir = direction.UP;
+    }
+    else{
+      curDir = direction.LEFT;
+    }
+  }
+
+</script>
+
+</body>
+</html>

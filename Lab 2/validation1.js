@@ -1,9 +1,12 @@
 function validateForm() {
 
+  var overallValidation = [false, false, false, false];
+
   // validate first name
   var firstName = document.forms["userInput"].elements["firstName"].value;
   var result = validateText(firstName);
   if(result == true){ // place check
+    overallValidation[0] = true;
     var image = document.createElement("IMG");
     image.setAttribute("src", "correct.png");
     var src = document.getElementById("firstName");
@@ -17,6 +20,7 @@ function validateForm() {
 
   }
   else{ // place X
+    overallValidation[0] = false;
     var image = document.createElement("IMG");
     image.setAttribute("src", "wrong.png");
     var src = document.getElementById("firstName");
@@ -33,6 +37,7 @@ function validateForm() {
   var lastName = document.forms["userInput"].elements["lastName"].value;
   result = validateText(lastName);
   if(result == true){// place check
+    overallValidation[1] = true;
     var image = document.createElement("IMG");
     image.setAttribute("src", "correct.png");
     var src = document.getElementById("lastName");
@@ -45,6 +50,7 @@ function validateForm() {
     }
   }
   else{// place X
+    overallValidation[1] = false;
     var image = document.createElement("IMG");
     image.setAttribute("src", "wrong.png");
     var src = document.getElementById("lastName");
@@ -61,6 +67,7 @@ function validateForm() {
   var gender = document.forms["userInput"].elements["gender"].value;
     // must be entered
   if(gender == "Female" || gender == "Male"){// place check
+    overallValidation[2] = true;
     var image = document.createElement("IMG");
     image.setAttribute("src", "correct.png");
     var src = document.getElementById("gender");
@@ -73,6 +80,7 @@ function validateForm() {
     }
   }
   else{// place X
+    overallValidation[2] = false;
     var image = document.createElement("IMG");
     image.setAttribute("src", "wrong.png");
     var src = document.getElementById("gender");
@@ -93,6 +101,7 @@ function validateForm() {
     || state == "Hawaii" || state == "Washington"
     || state == "Colorado" || state == "Virginia"
     || state == "Iowa" || state == "Arizona"){// place check
+      overallValidation[3] = true;
       var image = document.createElement("IMG");
       image.setAttribute("src", "correct.png");
       var src = document.getElementById("state");
@@ -105,6 +114,7 @@ function validateForm() {
       }
     }
     else{// place X
+      overallValidation[3] = false;
       var image = document.createElement("IMG");
       image.setAttribute("src", "wrong.png");
       var src = document.getElementById("state");
@@ -134,4 +144,10 @@ function validateForm() {
 
     }
 
+    if((overallValidation[0]==true) && (overallValidation[1]==true) && (overallValidation[2]==true) && (overallValidation[3]==true)){
+      // save state to local storage
+      localStorage.setItem("State", state);
+      // if all parts are valid go to next page
+      self.location = "validation2.html";
+    }
 }
