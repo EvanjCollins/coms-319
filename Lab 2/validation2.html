@@ -6,19 +6,29 @@
 
 <script src="validation2.js"></script>
 
-<form name="Contact Information">
-  Email:<br>
-  <input type="text" name="email">
-  <div id="emailDiv"></div><br>
-  Phone:<br>
-  <input type="text" name="phone">
-  <div id="phoneDiv"></div><br>
-  Address:<br>
-  <input type="text" name="address">
-  <div id="addressDiv"></div><br>
+<style media="screen">
+  div{
+    background-color: grey;
+  }
+</style>
 
-</form>
+<body bgcolor="#E6E6FA">
+  <form name="Contact Information" style="border: solid 1px #000000;">
+    <div>
+      &nbsp;Email:<br>
+      &nbsp;&nbsp;<input type="text" name="email">
+      <div id="emailDiv"></div><br>
+      &nbsp;Phone:<br>
+      &nbsp;&nbsp;<input type="text" name="phone">
+      <div id="phoneDiv"></div><br>
+      &nbsp;Address:<br>
+      &nbsp;&nbsp;<input type="text" name="address">
+      <div id="addressDiv"></div><br>
+    </div>
+  </form>
 
-<button type="button" onclick="validateForm()">Continue</button>
+  <button type="button" onclick="validateForm()">Continue</button>
+</body>
+
 
 </html>

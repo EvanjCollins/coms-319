@@ -6,36 +6,46 @@
 
 <script src="validation1.js"></script>
 
-<form name="userInput">
-  First Name<br>
-  <input type="text" name="firstName">
-  <div id="firstName"></div><br>
-  Last Name<br>
-  <input type="text" name="lastName">
-  <div id="lastName"></div><br>
-  Gender<br>
-  <select name="gender">
-    <option value="Please Select">Please Select</option>
-    <option value="Male">Male</option>
-    <option value="Female">Female</option>
-  </select>
-  <div id="gender"></div><br>
-  State<br>
-  <select name="state">
-    <option value="Please Select">Please Select</option>
-    <option value="California">California</option>
-    <option value="Florida">Florida</option>
-    <option value="New York">New York</option>
-    <option value="Texas">Texas</option>
-    <option value="Hawaii">Hawaii</option>
-    <option value="Washington">Washington</option>
-    <option value="Colorado">Colorado</option>
-    <option value="Virginia">Virginia</option>
-    <option value="Iowa">Iowa</option>
-    <option value="Arizona">Arizona</option>
-  </select>
-  <div id="state"></div><br>
-</form>
+<style media="screen">
+  div{
+    background-color: grey;
+  }
+</style>
+
+<body bgcolor="#E6E6FA">
+  <form name="userInput" style="border: solid 1px #000000;">
+    <div>
+      &nbsp;First Name<br>
+      &nbsp;&nbsp;<input type="text" name="firstName">
+      <div id="firstName"></div><br>
+      &nbsp;Last Name<br>
+      &nbsp;&nbsp;<input type="text" name="lastName">
+      <div id="lastName"></div><br>
+      &nbsp;Gender<br>
+      &nbsp;&nbsp;<select name="gender">
+        <option value="Please Select">Please Select</option>
+        <option value="Male">Male</option>
+        <option value="Female">Female</option>
+      </select>
+      <div id="gender"></div><br>
+      &nbsp;State<br>
+      &nbsp;&nbsp;<select name="state">
+        <option value="Please Select">Please Select</option>
+        <option value="California">California</option>
+        <option value="Florida">Florida</option>
+        <option value="New York">New York</option>
+        <option value="Texas">Texas</option>
+        <option value="Hawaii">Hawaii</option>
+        <option value="Washington">Washington</option>
+        <option value="Colorado">Colorado</option>
+        <option value="Virginia">Virginia</option>
+        <option value="Iowa">Iowa</option>
+        <option value="Arizona">Arizona</option>
+      </select>
+      <div id="state"></div><br>
+    </div>
+  </form>
+</body>
 
 <button type="button" onclick="validateForm()">Continue</button>
 

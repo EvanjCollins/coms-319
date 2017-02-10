@@ -145,7 +145,9 @@ function validateForm() {
     }
 
     if((overallValidation[0]==true) && (overallValidation[1]==true) && (overallValidation[2]==true) && (overallValidation[3]==true)){
-      //if all parts are valid go to next page
+      // save state to local storage
+      localStorage.setItem("State", state);
+      // if all parts are valid go to next page
       self.location = "validation2.html";
     }
 }
