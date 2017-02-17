@@ -4,15 +4,13 @@ function getUserEvents(){
   var responseData;
 
 	$.ajax({
-                url: url,
-                dataType: 'json',
-                async: false,
-                success: function(data) {
-                //        console.log(data);
-			responseData = data;
-                }
-        });
-
+    url: url,
+    dataType: 'json',
+    async: false,
+    success: function(data) {
+      responseData = data;
+    }
+  });
 
 	$('#tableHere').append('<table id="usersEventTable" border="1" style="width:680px"></table>');
 
@@ -22,7 +20,6 @@ function getUserEvents(){
 		appendString += "<tr><td>";
 		appendString += genEventRow(responseData.message[i], i);
 		appendString += "</td></tr>";
-		//console.log(responseData.message[i]);
 	}
 	$('#usersEventTable').append(appendString);
 }
@@ -48,7 +45,6 @@ function genEventRow(eventJSON, num){
 	returnString += "<input onclick=\"rsvp(";
 	returnString += num;
 	returnString += ")\" value=\"RSVP to " + eventJSON.eventName + "\" type=\"button\" id=\"Event" + num + "\"";
-
 	return returnString;
 }
 
@@ -56,8 +52,8 @@ function getIndex(arr, val) {
     console.log(arr);
     for (var i=0; i<arr.length; i++) {
         if (arr[i].Name == val){
-		return i;
-	}
+		        return i;
+	      }
     }
     return -1;
 }
@@ -74,42 +70,36 @@ function rsvp(eventNum){
 		eventQuery += " ";
 	}
 
-	//location.reload();
 	var url = "http://proj-319-104.cs.iastate.edu:3000/events/byEventName/" + eventQuery;
 	var responseData;
 	$.ajax({
-                url: url,
-                dataType: 'json',
-                async: false,
-                success: function(data) {
-                        //console.log(data);
-                	responseData = data;
-                }
-        });
+    url: url,
+    dataType: 'json',
+    async: false,
+    success: function(data) {
+    	responseData = data;
+    }
+  });
 	var user = localStorage.Name;
 	var index = getIndex(responseData.message[0].invitedUsers, user);
 	responseData.message[0].invitedUsers[index].RSVP = true;
 	console.log(responseData.message[0]);
 	responseData.message[0].invitedUsers = JSON.stringify(responseData.message[0].invitedUsers);
-	//var formData = {"eventName": responseData.message[0].eventName, "eventDescription": responseData.message[0].eventDescription, "invitedUsers": responseData.message[0].invitedUsers};
-        //var formData = {"invitedUsers": test[0]};
-	try{
-                $.ajax({
-                        url: "http://proj-319-104.cs.iastate.edu:3000/events/byEventName/" + eventQuery,
-                        dataType: 'json',
-                        type: "PUT",
-                        data: responseData.message[0],
-                        async: false,
-                        success: function(data) {
-                               // console.log(data);
-                        }
-                });
-        }
-        catch(err){
-                console.log(err);
-        }
-        location.reload();
 
+	try{
+    $.ajax({
+      url: "http://proj-319-104.cs.iastate.edu:3000/events/byEventName/" + eventQuery,
+      dataType: 'json',
+      type: "PUT",
+      data: responseData.message[0],
+      async: false,
+      success: function(data) {}
+    });
+  }
+  catch(err){
+    console.log(err);
+  }
+  location.reload();
 }
 
 function eventGetRequest(){
@@ -121,33 +111,62 @@ function createNewEvent(){
   var eventName = document.getElementById("eventName").value;
   var eventDescription = document.getElementById("eventDescription").value;
   var invitedFriends = document.getElementById("invitedFriends").value;
-  //need to parse friend list and turn into json object for form data
   var friendArray = invitedFriends.split(",");
   var friendsJSON = "[";
   for(var i=0; i<friendArray.length-1; i++){
-        friendArray[i] = friendArray[i].trim();
+    friendArray[i] = friendArray[i].trim();
   	friendsJSON += "{\"Name\": \"" + friendArray[i] + "\",\"RSVP\": false},";
   }
   friendArray[i] = friendArray[i].trim();
   friendsJSON += "{\"Name\": \"" + friendArray[i] + "\",\"RSVP\": false}";
   friendsJSON += "]";
-  //console.log(friendsJSON);
 
-  var formData = {"eventName": eventName, "eventDescription": eventDescription, "invitedUsers": friendsJSON};
+  var url = "http://proj-319-104.cs.iastate.edu:3000/events/byEventName/" + eventName;
+  var eventNameAvailable;
+
+  try{
+    $.ajax({
+      url: url,
+      dataType: 'json',
+      async: false,
+      success: function(data) {
+        if(data.message.length == 0){
+          eventNameAvailable = true;
+        }else{
+          eventNameAvailable = false;
+        }
+      }
+    });
+  }
+  catch(err){
+    alert(err);
+  }
+
+  if(eventNameAvailable){
+    var formData = {"eventName": eventName, "eventDescription": eventDescription, "invitedUsers": friendsJSON};
   	try{
-        	$.ajax({
-                	url: "http://proj-319-104.cs.iastate.edu:3000/events/",
-                        dataType: 'json',
-                        type: "POST",
-                        data: formData,
-                        async: false,
-                        success: function(data) {
-                                console.log(data);
-                        }
-                });
-        }
-        catch(err){
-        	console.log(err);
-        }
+    	$.ajax({
+      	url: "http://proj-319-104.cs.iastate.edu:3000/events/",
+        dataType: 'json',
+        type: "POST",
+        data: formData,
+        async: false,
+        success: function(data) {}
+      });
+    }
+    catch(err){
+    	console.log(err);
+    }
 	location.reload();
+  }else{
+    var placeTextHere = document.getElementById("eventAvail");
+    var message = document.createTextNode("Event Name Already In Use");
+
+    if(placeTextHere.hasChildNodes()){
+      placeTextHere.removeChild(placeTextHere.childNodes[0]);
+      placeTextHere.appendChild(message);
+    }else{
+    placeTextHere.appendChild(message);
+    }
+  }
 }

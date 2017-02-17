@@ -11,6 +11,7 @@ app.use(bodyParser.urlencoded({"extended" : false}));
 app.use(function(req, res, next) {
 	res.header("Access-Control-Allow-Origin", "*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	res.header("Access-Control-Allow-Methods", "GET, POST, PUT");
 	next();
 });
 
@@ -25,11 +26,11 @@ router.route("/users")
 			if(err) {
 				response = {"error" : true, "message" : "Error Fetching Events"};
 				var logMessage = "GET Request for All Users FAILS";
-                                console.log(logMessage);
+        console.log(logMessage);
 			}else{
 				response = {"error" : false, "message" : data};
 				var logMessage = "GET Request for All Users";
-                                console.log(logMessage);
+        console.log(logMessage);
 			}
 			res.json(response);
 		});
@@ -47,7 +48,7 @@ router.route("/users")
 		db.save(function(err){
 			if(err) {
 				response = {"error" : true, "message" : "Error adding user"};
-                                var logMessage = "POST Request for User " + req.body.name + " FAILS";
+        var logMessage = "POST Request for User " + req.body.name + " FAILS";
 				console.log(logMessage);
 			}else{
 				response = {"error" : false, "message" : "User Added"};
@@ -65,11 +66,11 @@ router.route("/users/:id")
 			if(err){
 				response = {"error" : true, "message" : "Error Fetching User"};
 				var logMessage = "GET Request for User " +  req.params.id + " FAILS";
-                		console.log(logMessage);
+        console.log(logMessage);
 			}else{
 				response = {"error" : false, "message" : data};
 				var logMessage = "GET Request for User " +  req.params.id;
-                		console.log(logMessage);
+        console.log(logMessage);
 			}
 			res.json(response);
 		});
@@ -95,9 +96,7 @@ router.route("/events/")
 
 		db.eventName = req.body.eventName;
 		db.eventDescription = req.body.eventDescription;
-		var test = JSON.parse(req.body.invitedUsers);
 		db.invitedUsers = JSON.parse(req.body.invitedUsers);
-
 
 		db.save(function(err){
 			if(err){
@@ -127,12 +126,37 @@ router.route("/events/byEventName/:id")
 			}
 			res.json(response);
 		});
+	})
+	.put(function(req,res){
+		var response = {};
+		var iu = req.body.invitedUsers;
+		console.log(req.body);
+		userObj = JSON.parse(iu);
+		var dbUpdate = {};
+		dbUpdate = Object.assign(dbUpdate, req.body._doc);
+		delete dbUpdate._id;
+		dbUpdate.eventName = req.body.eventName;
+		dbUpdate.eventDescription = req.body.eventDescription;
+		dbUpdate.invitedUsers = userObj;
+		console.log(dbUpdate);
+		mongoSchema.eventSchema.findOneAndUpdate({"eventName": req.params.id}, dbUpdate, {new: true}, function (err, data) {
+			if(err) {
+        response = {"error" : true, "message" : "Error Updating Events"};
+        var logMessage = "PUT Request for Event " + req.params.id + " FAILS";
+        console.log(logMessage);
+				console.log(err);
+      }else{
+        response = {"error" : false, "message" : data};
+        var logMessage = "PUT Request for event " + req.params.id;
+        console.log(logMessage);
+      }
+      res.send(data);
+		});
 	});
 
 router.route("/events/byUser/:id")
 	.get(function(req, res){
 		var response = {};
-		//var string = "{\"invitedUsers\": {$elemMatch: {Name: \"" + req.params.id + "\"}}}";
 		mongoSchema.eventSchema.find({"invitedUsers": {$elemMatch: {Name: req.params.id}}}, function(err, data){
 			if(err){
 				response = {"error": true, "message": "Error Fetching Event by User"};
@@ -146,7 +170,6 @@ router.route("/events/byUser/:id")
 			res.json(response);
 		});
 	});
-
 
 app.use('/', router);
 
