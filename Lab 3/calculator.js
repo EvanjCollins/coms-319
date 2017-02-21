@@ -38,7 +38,13 @@ Controller : {
 
 },
 
+
 run : function() {
+  operation = 0;
+  arg1 = 0;
+  arg2 = 0;
+  memory = 0;
+  reset = 0;
   Calc.attachHandlers();
   console.log(Calc.display());
   return Calc.display();
@@ -97,62 +103,123 @@ display : function() {
 },
 
 attachHandlers : function() {
-  Calc.View.button7.onclick = "Calc.button7Handler()"; 
-  Calc.View.button8.onclick = "Calc.button8Handler()";
-  Calc.View.button9.onclick = "Calc.button9Handler()";
-  Calc.View.buttonadd.onclick = "Calc.buttonaddHandler()";   
+  Calc.View.button0.onclick = "Calc.buttonHandler(0)";
+  Calc.View.button1.onclick = "Calc.buttonHandler(1)";
+  Calc.View.button2.onclick = "Calc.buttonHandler(2)";   
+  Calc.View.button3.onclick = "Calc.buttonHandler(3)"; 
+  Calc.View.button4.onclick = "Calc.buttonHandler(4)";
+  Calc.View.button5.onclick = "Calc.buttonHandler(5)";
+  Calc.View.button6.onclick = "Calc.buttonHandler(6)";   
+  Calc.View.button7.onclick = "Calc.buttonHandler(7)"; 
+  Calc.View.button8.onclick = "Calc.buttonHandler(8)";
+  Calc.View.button9.onclick = "Calc.buttonHandler(9)";
+  Calc.View.buttonadd.onclick = "Calc.buttonOperHandler(' + ')";
+  Calc.View.buttonsub.onclick = "Calc.buttonOperHandler(' - ')";   
+  Calc.View.buttonmul.onclick = "Calc.buttonOperHandler(' * ')";
+  Calc.View.buttondiv.onclick = "Calc.buttonOperHandler('/')";
+  Calc.View.buttonC.onclick = "Calc.buttonCHandler('C')";
+  Calc.View.buttonMC.onclick = "Calc.buttonCHandler('MC')";  
+  Calc.View.buttonMR.onclick = "Calc.buttonCHandler('MR')";
+  Calc.View.buttonMmin.onclick = "Calc.buttonCHandler('Mmin')";  
+  Calc.View.buttonMplus.onclick = "Calc.buttonCHandler('Mplus')";    
+  Calc.View.buttonequal.onclick = "Calc.buttonequalHandler()";  
 },
 
-button0Handler : function() {
-	document.getElementById("textRow").value += '0';
+operate : function(oper){
+	if(oper = '-'){
+		val = arg1 - arg2;
+	}
+	if(oper = '+'){
+		val = arg1 + arg2;
+	}
+	if(oper = '*'){
+		val = arg1 * arg2;
+	}
+	if(oper = '/'){
+		val = arg1/arg2;
+	}
+	return val;
 },
 
-button1Handler : function() {
-	document.getElementById("textRow").value += '1';
+buttonHandler : function(num) {
+	if(reset == 1){
+	arg1 = 0;
+	arg2 = 0;
+	document.getElementById("textRow").value = '';
+	reset = 0;
+	}
+	if(operation == 0){
+	document.getElementById("textRow").value += num;
+	arg1 = arg1*10 + num;	
+	}
+	else{
+	document.getElementById("textRow").value += num;
+	arg2 = arg2*10 + num;
+	}
 },
 
-button2Handler : function() {
-	document.getElementById("textRow").value += '2';
+buttonOperHandler : function(oper) {
+	if(operation == 0){
+	document.getElementById("textRow").value += oper;
+	operation = oper;
+	}
 },
 
-button3Handler : function() {
-	document.getElementById("textRow").value += '3';
+buttonCHandler : function(handle) {
+	if(handle == 'C'){
+	document.getElementById("textRow").value = '';
+	operation = 0;
+	arg1 = 0;
+	arg2 = 0;
+	}
+	else if(handle == 'MC'){
+	memory = 0;
+	}
+	else if(handle == 'MR'){
+	document.getElementById("textRow").value = memory;
+	operation = 0;
+	arg1 = 0;
+	arg2 = 0;
+	}
 },
 
-button4Handler : function() {
-	document.getElementById("textRow").value += '4';
+buttonequalHandler : function(){
+	if(operation == ' - '){
+		val = arg1-arg2;
+		document.getElementById("textRow").value = val;
+		operation = 0;
+		arg1 = val;
+		arg2 = 0;
+		memory = val;
+		reset = 1;
+	}
+	else if(operation == ' + '){
+		val = arg1+arg2;
+		document.getElementById("textRow").value = val;
+		operation = 0;
+		arg1 = val;
+		arg2 = 0;
+		memory = val;
+		reset = 1;
+	}
+	else if(operation == ' * '){
+		val = arg1*arg2;
+		document.getElementById("textRow").value = val;
+		operation = 0;
+		arg1 = val;
+		arg2 = 0;
+		memory = val;
+		reset = 1;
+	}
+	else if(operation == '/'){
+		val = arg1/arg2;
+		document.getElementById("textRow").value = val;
+		operation = 0;
+		arg1 = val;
+		arg2 = 0;
+		memory = val;
+		reset = 1;
+	}
 },
-
-button5Handler : function() {
-	document.getElementById("textRow").value += '5';
-},
-
-button6Handler : function() {
-	document.getElementById("textRow").value += '6';
-},
-
-button7Handler : function() {
-	document.getElementById("textRow").value += '7';
-},
-
-button8Handler : function() {
-	document.getElementById("textRow").value += '8';
-},
-
-button9Handler : function() {
-	document.getElementById("textRow").value += '9';
-},
-
-buttonaddHandler : function() {
-	document.getElementById("textRow").value += ' + ';
-}
-
-buttonsubHandler : function() {
-	document.getElementById("textRow").value += ' - ';
-}
-
-buttonmulHandler : function() {
-	document.getElementById("textRow").value += ' * ';
-}
 
 } // end of Calc;
