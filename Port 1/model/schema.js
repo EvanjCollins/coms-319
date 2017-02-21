@@ -6,7 +6,7 @@ var mongoSchema = mongoose.Schema;
 var userSchema = {
         "userName" : String,
         "hashedUserPass" : String,
-	"userID" : Number
+        "userID" : Number
 };
 
 var eventSchema = {

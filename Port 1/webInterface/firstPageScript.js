@@ -1,173 +1,158 @@
-function getUserEvents(){
-  var user = localStorage.Name;
-  var url = "http://proj-319-104.cs.iastate.edu:3000/events/byUser/" + user;
-  var responseData;
+function registerUser(){
+	var inputElement = document.getElementById("nameInput");
+	var userName = inputElement.value;
+	inputElement = document.getElementById("passwordInput");
+	var password = inputElement.value;
 
-	$.ajax({
-    url: url,
-    dataType: 'json',
-    async: false,
-    success: function(data) {
-			responseData = data;
-  	}
-  });
+	var url = "http://proj-319-104.cs.iastate.edu:3000/users/" + userName;
+	var userNameAvailable;
+	var hashedPass = CryptoJS.SHA1(password);
 
-	$('#tableHere').append('<table id="usersEventTable" border="1" style="width:680px"></table>');
-
-	var appendString = "<tr><th> Current Events </th></tr>";
-
-	for(var i=0; i< responseData.message.length; i++){
-		appendString += "<tr><td>";
-		appendString += genEventRow(responseData.message[i], i);
-		appendString += "</td></tr>";
-	}
-	$('#usersEventTable').append(appendString);
-}
-
-function genEventRow(eventJSON, num){
-	var returnString = "";
-	returnString += "Event Name: " + eventJSON.eventName + "<br>";
-	returnString += "Event Description: " + eventJSON.eventDescription + "<br>";
-	returnString += "Invited Users: <br>";
-	for(var j=0; j<eventJSON.invitedUsers.length; j++){
-		if(eventJSON.invitedUsers[j].RSVP == true){
-			returnString += "&ensp;&ensp;";
-			returnString += eventJSON.invitedUsers[j].Name;
-			returnString += " is Coming!";
-			returnString += "<br>";
-		}else{
-			returnString += "&ensp;&ensp;";
-			returnString += eventJSON.invitedUsers[j].Name;
-                        returnString += " is not Coming.";
-			returnString += "<br>";
-		}
-	}
-	returnString += "<input onclick=\"rsvp(";
-	returnString += num;
-	returnString += ")\" value=\"RSVP to " + eventJSON.eventName + "\" type=\"button\" id=\"Event" + num + "\"";
-
-	return returnString;
-}
-
-function getIndex(arr, val) {
-    console.log(arr);
-    for (var i=0; i<arr.length; i++) {
-        if (arr[i].Name == val){
-					return i;
+	try{
+		$.ajax({
+                	url: url,
+                	dataType: 'json',
+                	async: false,
+                	success: function(data) {
+                        	if(data.message.length == 0){
+					userNameAvailable = true;
+				}else{
+					userNameAvailable = false;
 				}
-    }
-    return -1;
-}
-
-function rsvp(eventNum){
-	var eID = "Event" + eventNum;
-	var eventElement = document.getElementById(eID);
-	var eventName = eventElement.value;
-	var eventName = eventName.split(" ");
-	var eventQuery = "";
-
-	for(var i=2; i<eventName.length; i++){
-		eventQuery += eventName[i];
-		eventQuery += " ";
+				console.log(data);
+                	}
+        	});
+	}
+	catch(err){
+		alert(err);
 	}
 
-	var url = "http://proj-319-104.cs.iastate.edu:3000/events/byEventName/" + eventQuery;
-	var responseData;
-	$.ajax({
-    url: url,
-    dataType: 'json',
-    async: false,
-    success: function(data) {
-    	responseData = data;
-    }
-  });
-	var user = localStorage.Name;
-	var index = getIndex(responseData.message[0].invitedUsers, user);
-	responseData.message[0].invitedUsers[index].RSVP = true;
-	console.log(responseData.message[0]);
-	responseData.message[0].invitedUsers = JSON.stringify(responseData.message[0].invitedUsers);
+	if(userNameAvailable){
+		var placeTextHere = document.getElementById("nameDiv");
+		//var paragraph = document.createElement("P");
+		var message = document.createTextNode("Valid Name");
 
-	try{
-    $.ajax({
-            url: "http://proj-319-104.cs.iastate.edu:3000/events/byEventName/" + eventQuery,
-            dataType: 'json',
-            type: "PUT",
-            data: responseData.message[0],
-            async: false,
-            success: function(data) {}
-    });
-  }
-  catch(err){
-    console.log(err);
-  }
-  location.reload();
-}
+		if(placeTextHere.hasChildNodes()){
+			placeTextHere.removeChild(placeTextHere.childNodes[0]);
+			placeTextHere.appendChild(message);
+		}else{
+			placeTextHere.appendChild(message);
+		}
+	}else{
+		var placeTextHere = document.getElementById("nameDiv");
+                //var paragraph = document.createElement("P");
+                var message = document.createTextNode("Name Already Taken");
 
-function eventGetRequest(){
-  getUserEvents();
-}
+                if(placeTextHere.hasChildNodes()){
+                        placeTextHere.removeChild(placeTextHere.childNodes[0]);
+                        placeTextHere.appendChild(message);
+                }else{
+                        placeTextHere.appendChild(message);
+                }
 
-function createNewEvent(){
-  var url = "http://proj-319-104.cs.iastate.edu:3000/events/";
-  var eventName = document.getElementById("eventName").value;
-  var eventDescription = document.getElementById("eventDescription").value;
-  var invitedFriends = document.getElementById("invitedFriends").value;
-  var friendArray = invitedFriends.split(",");
-  var friendsJSON = "[";
-  for(var i=0; i<friendArray.length-1; i++){
-    friendArray[i] = friendArray[i].trim();
-  	friendsJSON += "{\"Name\": \"" + friendArray[i] + "\",\"RSVP\": false},";
-  }
-  friendArray[i] = friendArray[i].trim();
-  friendsJSON += "{\"Name\": \"" + friendArray[i] + "\",\"RSVP\": false}";
-  friendsJSON += "]";
+	}
 
-  var url = "http://proj-319-104.cs.iastate.edu:3000/events/byEventName/" + eventName;
-  var eventNameAvailable;
+	var passwordValid = validateText(password);
 
-  try{
-    $.ajax({
-      url: url,
-      dataType: 'json',
-      async: false,
-      success: function(data) {
-        if(data.message.length == 0){
-          eventNameAvailable = true;
+	if(passwordValid){
+		var placeTextHere = document.getElementById("passDiv");
+                //var paragraph = document.createElement("P");
+                var message = document.createTextNode("Valid Password");
+
+                if(placeTextHere.hasChildNodes()){
+                        placeTextHere.removeChild(placeTextHere.childNodes[0]);
+                        placeTextHere.appendChild(message);
+                }else{
+                        placeTextHere.appendChild(message);
+                }
         }else{
-          eventNameAvailable = false;
-        }
-      }
-    });
-  }
-  catch(err){
-    alert(err);
-  }
+                var placeTextHere = document.getElementById("passDiv");
+                //var paragraph = document.createElement("P");
+                var message = document.createTextNode("Invalid Password, No Special Characters");
 
-  if(eventNameAvailable){
-  var formData = {"eventName": eventName, "eventDescription": eventDescription, "invitedUsers": friendsJSON};
-	try{
+
+                if(placeTextHere.hasChildNodes()){
+                        placeTextHere.removeChild(placeTextHere.childNodes[0]);
+                        placeTextHere.appendChild(message);
+                }else{
+                        placeTextHere.appendChild(message);
+                }
+	}
+
+	if(userNameAvailable && passwordValid){
+		var formData = {"name": userName, "hashedUserPass": String(hashedPass)};
+		try{
+                $.ajax({
+                        url: "http://proj-319-104.cs.iastate.edu:3000/users/",
+                        dataType: 'json',
+                        type: "POST",
+			data: formData,
+			async: false,
+                        success: function(data) {
+                                console.log(data);
+                        }
+                });
+        	}
+        	catch(err){
+                	console.log(err);
+        	}
+	}
+
+}
+
+function loginUser(){
+	var inputElement = document.getElementById("nameInput");
+	var userName = inputElement.value;
+	inputElement = document.getElementById("passwordInput");
+	var password = inputElement.value;
+
+  	var hashedPass = CryptoJS.SHA1(password);
+
+  	var url = "http://proj-319-104.cs.iastate.edu:3000/users/" + userName;
+	var remoteUserName;
+	var remoteHashedUserPass;
+
   	$.ajax({
-    	url: "http://proj-319-104.cs.iastate.edu:3000/events/",
-      dataType: 'json',
-      type: "POST",
-      data: formData,
-      async: false,
-      success: function(data) {}
-    });
-  }
-  catch(err){
-  	console.log(err);
-  }
-	location.reload();
-  }else{
-    var placeTextHere = document.getElementById("eventAvail");
-    var message = document.createTextNode("Event Name Already In Use");
+		url: url,
+		dataType: 'json',
+		async: false,
+		success: function(data) {
+			remoteUserName = data.message[0].userName;
+			remoteHashedUserPass = data.message[0].hashedUserPass;
+		}
+	});
 
-    if(placeTextHere.hasChildNodes()){
-      placeTextHere.removeChild(placeTextHere.childNodes[0]);
-      placeTextHere.appendChild(message);
-    }else{
-      placeTextHere.appendChild(message);
+	if(remoteHashedUserPass == hashedPass){
+		alert("Logging In");
+		localStorage.setItem("Name", remoteUserName);
+		self.location = "http://proj-319-104.cs.iastate.edu/eventPage.html";
+	}else{
+		var appendHere = document.getElementById("loginDiv");
+		var message = document.createTextNode("Incorrect Name or Password");
+
+                if(appendHere.hasChildNodes()){
+                        appendHere.removeChild(appendHere.childNodes[0]);
+                        appendHere.appendChild(message);
+                }else{
+                        appendHere.appendChild(message);
+                }
+	}
+
+}
+
+function validateText(textInput){
+    var bool = true;
+
+    if(textInput == ""){
+      return false;
     }
-  }
+    for(var i=0; i<textInput.length; i++){
+      var value = textInput.charCodeAt(i);
+      if((value < 48 && value != 32) || value > 122){
+        bool = false;
+      }
+
+    }
+    return bool;
+
 }
