@@ -1,4 +1,4 @@
-// CALCULATOR.JS
+// Calculator.JS
 //   Note: Look at 04_SampleProgram first
 //
 //
@@ -6,6 +6,11 @@
 var Calc = {
 
 Model : {
+  operation : 0,
+  arg1 : 0,
+  arg2 : 0,
+  memory : 0,
+  reset : 0
 },
 
 
@@ -31,20 +36,93 @@ View : {
   buttonMR : {id: "buttonMR", type: "button", value: 'MR', onclick:""},
   buttonMmin : {id: "buttonMmin", type: "button", value: 'M-', onclick:""},
   buttonMplus : {id: "buttonMplus", type: "button", value: 'M+', onclick:""},
-  buttonMC : {id: "button1", type: "button", value: 'MC', onclick:""}
+  buttonMC : {id: "button1", type: "button", value: 'MC', onclick:""},
 },
 
 Controller : {
+renew: function() {
+	document.getElementById("textRow").value = val;
+	Calc.Model.operation = 0;
+	Calc.Model.arg1 = val;
+	Calc.Model.arg2 = 0;
+	Calc.Model.memory = val;
+	Calc.Model.reset = 1;
+	},
+buttonHandler : function(num) {
+	if(Calc.Model.reset == 1){
+	document.getElementById("textRow").value = '';
+	Calc.Model.reset = 0;
+	}
+	if(Calc.Model.operation == 0){
+	document.getElementById("textRow").value += num;
+	Calc.Model.arg1 = Calc.Model.arg1*10 + num;	
+	}
+	else{
+	document.getElementById("textRow").value += num;
+	Calc.Model.arg2 = Calc.Model.arg2*10 + num;
+	}
+},
 
+buttonOperHandler : function(oper) {
+	if(Calc.Model.operation == 0){
+	document.getElementById("textRow").value += oper;
+	Calc.Model.operation = oper;
+	}
+},
+
+buttonCHandler : function(handle) {
+	if(handle == 'C'){
+	document.getElementById("textRow").value = '';
+	Calc.Model.operation = 0;
+	Calc.Model.arg1 = 0;
+	Calc.Model.arg2 = 0;
+	}
+	else if(handle == 'MC'){
+	Calc.Model.memory = 0;
+	}
+	else if(handle == 'MR'){
+	document.getElementById("textRow").value = Calc.Model.memory;
+	Calc.Model.operation = 0;
+	Calc.Model.arg1 = Calc.Model.memory;
+	Calc.Model.arg2 = 0;
+	}
+	else if(handle == 'Mmin'){
+	Calc.Model.memory -= Calc.Model.arg1;
+	document.getElementById("textRow").value = Calc.Model.memory;
+	Calc.Model.arg1 = Calc.Model.memory;
+	}
+	else if(handle == 'Mplus'){
+	Calc.Model.memory += Calc.Model.arg1;
+	document.getElementById("textRow").value = Calc.Model.memory;
+	Calc.Model.arg1 = Calc.Model.memory;
+	}
+},
+
+buttonequalHandler : function(that){
+	if(Calc.Model.operation == ' - '){
+		val = Calc.Model.arg1-Calc.Model.arg2;	
+		Calc.Controller.renew();
+	}
+	else if(Calc.Model.operation == ' + '){
+		val = Calc.Model.arg1+Calc.Model.arg2;
+		document.getElementById("textRow").value = val;
+		Calc.Controller.renew();
+	}
+	else if(Calc.Model.operation == ' * '){
+		val = Calc.Model.arg1*Calc.Model.arg2;
+		document.getElementById("textRow").value = val;
+		Calc.Controller.renew();
+	}
+	else if(Calc.Model.operation == '/'){
+		val = Calc.Model.arg1/Calc.Model.arg2;
+		document.getElementById("textRow").value = val;
+		Calc.Controller.renew();
+		}
+}
 },
 
 
 run : function() {
-  operation = 0;
-  arg1 = 0;
-  arg2 = 0;
-  memory = 0;
-  reset = 0;
   Calc.attachHandlers();
   console.log(Calc.display());
   return Calc.display();
@@ -103,123 +181,28 @@ display : function() {
 },
 
 attachHandlers : function() {
-  Calc.View.button0.onclick = "Calc.buttonHandler(0)";
-  Calc.View.button1.onclick = "Calc.buttonHandler(1)";
-  Calc.View.button2.onclick = "Calc.buttonHandler(2)";   
-  Calc.View.button3.onclick = "Calc.buttonHandler(3)"; 
-  Calc.View.button4.onclick = "Calc.buttonHandler(4)";
-  Calc.View.button5.onclick = "Calc.buttonHandler(5)";
-  Calc.View.button6.onclick = "Calc.buttonHandler(6)";   
-  Calc.View.button7.onclick = "Calc.buttonHandler(7)"; 
-  Calc.View.button8.onclick = "Calc.buttonHandler(8)";
-  Calc.View.button9.onclick = "Calc.buttonHandler(9)";
-  Calc.View.buttonadd.onclick = "Calc.buttonOperHandler(' + ')";
-  Calc.View.buttonsub.onclick = "Calc.buttonOperHandler(' - ')";   
-  Calc.View.buttonmul.onclick = "Calc.buttonOperHandler(' * ')";
-  Calc.View.buttondiv.onclick = "Calc.buttonOperHandler('/')";
-  Calc.View.buttonC.onclick = "Calc.buttonCHandler('C')";
-  Calc.View.buttonMC.onclick = "Calc.buttonCHandler('MC')";  
-  Calc.View.buttonMR.onclick = "Calc.buttonCHandler('MR')";
-  Calc.View.buttonMmin.onclick = "Calc.buttonCHandler('Mmin')";  
-  Calc.View.buttonMplus.onclick = "Calc.buttonCHandler('Mplus')";    
-  Calc.View.buttonequal.onclick = "Calc.buttonequalHandler()";  
+  Calc.View.button0.onclick = "Calc.Controller.buttonHandler(0)";
+  Calc.View.button1.onclick = "Calc.Controller.buttonHandler(1)";
+  Calc.View.button2.onclick = "Calc.Controller.buttonHandler(2)";   
+  Calc.View.button3.onclick = "Calc.Controller.buttonHandler(3)"; 
+  Calc.View.button4.onclick = "Calc.Controller.buttonHandler(4)";
+  Calc.View.button5.onclick = "Calc.Controller.buttonHandler(5)";
+  Calc.View.button6.onclick = "Calc.Controller.buttonHandler(6)";   
+  Calc.View.button7.onclick = "Calc.Controller.buttonHandler(7)"; 
+  Calc.View.button8.onclick = "Calc.Controller.buttonHandler(8)";
+  Calc.View.button9.onclick = "Calc.Controller.buttonHandler(9)";
+  Calc.View.buttonper.onclick = "Calc.Controller.buttonHandler('.')";
+  Calc.View.buttonadd.onclick = "Calc.Controller.buttonOperHandler(' + ')";
+  Calc.View.buttonsub.onclick = "Calc.Controller.buttonOperHandler(' - ')";   
+  Calc.View.buttonmul.onclick = "Calc.Controller.buttonOperHandler(' * ')";
+  Calc.View.buttondiv.onclick = "Calc.Controller.buttonOperHandler('/')";
+  Calc.View.buttonC.onclick = "Calc.Controller.buttonCHandler('C')";
+  Calc.View.buttonMC.onclick = "Calc.Controller.buttonCHandler('MC')";  
+  Calc.View.buttonMR.onclick = "Calc.Controller.buttonCHandler('MR')";
+  Calc.View.buttonMmin.onclick = "Calc.Controller.buttonCHandler('Mmin')";  
+  Calc.View.buttonMplus.onclick = "Calc.Controller.buttonCHandler('Mplus')";    
+  Calc.View.buttonequal.onclick = "Calc.Controller.buttonequalHandler(this)";
 },
 
-operate : function(oper){
-	if(oper = '-'){
-		val = arg1 - arg2;
-	}
-	if(oper = '+'){
-		val = arg1 + arg2;
-	}
-	if(oper = '*'){
-		val = arg1 * arg2;
-	}
-	if(oper = '/'){
-		val = arg1/arg2;
-	}
-	return val;
-},
-
-buttonHandler : function(num) {
-	if(reset == 1){
-	arg1 = 0;
-	arg2 = 0;
-	document.getElementById("textRow").value = '';
-	reset = 0;
-	}
-	if(operation == 0){
-	document.getElementById("textRow").value += num;
-	arg1 = arg1*10 + num;	
-	}
-	else{
-	document.getElementById("textRow").value += num;
-	arg2 = arg2*10 + num;
-	}
-},
-
-buttonOperHandler : function(oper) {
-	if(operation == 0){
-	document.getElementById("textRow").value += oper;
-	operation = oper;
-	}
-},
-
-buttonCHandler : function(handle) {
-	if(handle == 'C'){
-	document.getElementById("textRow").value = '';
-	operation = 0;
-	arg1 = 0;
-	arg2 = 0;
-	}
-	else if(handle == 'MC'){
-	memory = 0;
-	}
-	else if(handle == 'MR'){
-	document.getElementById("textRow").value = memory;
-	operation = 0;
-	arg1 = 0;
-	arg2 = 0;
-	}
-},
-
-buttonequalHandler : function(){
-	if(operation == ' - '){
-		val = arg1-arg2;
-		document.getElementById("textRow").value = val;
-		operation = 0;
-		arg1 = val;
-		arg2 = 0;
-		memory = val;
-		reset = 1;
-	}
-	else if(operation == ' + '){
-		val = arg1+arg2;
-		document.getElementById("textRow").value = val;
-		operation = 0;
-		arg1 = val;
-		arg2 = 0;
-		memory = val;
-		reset = 1;
-	}
-	else if(operation == ' * '){
-		val = arg1*arg2;
-		document.getElementById("textRow").value = val;
-		operation = 0;
-		arg1 = val;
-		arg2 = 0;
-		memory = val;
-		reset = 1;
-	}
-	else if(operation == '/'){
-		val = arg1/arg2;
-		document.getElementById("textRow").value = val;
-		operation = 0;
-		arg1 = val;
-		arg2 = 0;
-		memory = val;
-		reset = 1;
-	}
-},
 
 } // end of Calc;
