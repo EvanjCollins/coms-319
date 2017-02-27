@@ -181,6 +181,31 @@ Controller : {
 		val = Calc.Controller.dec2bin(temp3);
 		Calc.Controller.renew();
 	}
+	else if(Calc.Model.operation == '|'){
+		temp1 = Calc.Controller.bin2dec(Calc.Model.arg1);
+		temp2 = Calc.Controller.bin2dec(Calc.Model.arg2);
+		if(Number(temp1) > Number(temp2)){
+		val = Calc.Controller.dec2bin(temp1);
+		}
+		else{
+		val = Calc.Controller.dec2bin(temp2);
+		}
+		Calc.Controller.renew();
+	}
+	else if(Calc.Model.operation == '/'){
+		temp1 = Calc.Controller.bin2dec(Calc.Model.arg1);
+		temp2 = Calc.Controller.bin2dec(Calc.Model.arg2);
+		temp3 = Number(temp1)/Number(temp2);
+		val = Calc.Controller.dec2bin(temp3);
+		Calc.Controller.renew();
+	}	
+	else if(Calc.Model.operation == ' * '){
+		temp1 = Calc.Controller.bin2dec(Calc.Model.arg1);
+		temp2 = Calc.Controller.bin2dec(Calc.Model.arg2);
+		temp3 = Number(temp1)*Number(temp2);
+		val = Calc.Controller.dec2bin(temp3);
+		Calc.Controller.renew();
+	}
 	else if(Calc.Model.operation == ' % '){
 		temp1 = Calc.Controller.bin2dec(Calc.Model.arg1);
 		temp2 = Calc.Controller.bin2dec(Calc.Model.arg2);

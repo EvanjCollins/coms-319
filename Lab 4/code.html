@@ -1,41 +1,30 @@
 <html>
 <head>
+
+<style>
+#p1, #p2{
+	padding: 5px;
+    text-align: center;
+    border: solid 1px #c3c3c3;
+}
+#p2{
+    padding: 50px;
+    display: none;
+}
+
+</style>
+</head>
+
+<body>
+<form action="code.js">
+"Are we being watched?" <input id="first" type="text" name="Are we being watched?" value=""><br>
+Occupation: <input id="second" type="text" name="Does any of this matter?"><br>
+"What's the point?" <input id="third" type="text" name="What's the point?"><br>
+<input type="button" id="table" value="Create a table"/>
+</form>
+<div id="tablecreate">This is  div block: the table will appear above this</div>
 <script	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script	src="code.js"></script>
-<script>
-		//	page-specific	code	goes	here
-</script>
-
-</head>
-<body>
-
-<table border="1">
-  <tr>
-    <th>pop</th>
-    <th>Name</th>
-  </tr>
-  <tr>
-    <td>Alfreds Futterkiste</td>
-    <td class="boob" tabindex="0" aria-controls="example" rowspan="1" colspan="1" style="width: 136px;">poopy</td>
-  </tr>
-  <tr>
-    <td>Berglunds snabbköp</td>
-    <td>Sweden</td>
-  </tr>
-  <tr>
-    <td>Centro comercial Moctezuma</td>
-    <td>Mexico</td>
-  </tr>
-  <tr>
-    <td>Ernst Handel</td>
-    <td>Austria</td>
-  </tr>
-  <tr>
-    <td>Island Trading</td>
-    <td>UK</td>
-  </tr>
-</table>
-
 </body>
 
 </html>
