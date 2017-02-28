@@ -1,28 +1,20 @@
 <html>
 <head>
 
-<style>
-#p1, #p2{
-	padding: 5px;
-    text-align: center;
-    border: solid 1px #c3c3c3;
-}
-#p2{
-    padding: 50px;
-    display: none;
-}
-
-</style>
 </head>
 
 <body>
 <form action="code.js">
-"Are we being watched?" <input id="first" type="text" name="Are we being watched?" value=""><br>
-Occupation: <input id="second" type="text" name="Does any of this matter?"><br>
-"What's the point?" <input id="third" type="text" name="What's the point?"><br>
-<input type="button" id="table" value="Create a table"/>
+Name<input id="inp0" type="text" name="Name" value=""><br>
+Favorite Color <input id="inp1" type="text" name="State"><br>
+Age <input id="inp2" type="text" name="Age"><br>
+<input type="button" id="table" value="Give me your info"/>
 </form>
-<div id="tablecreate">This is  div block: the table will appear above this</div>
+<div id="tablecreate"></div>
+<input type="button" id="yes" value="yes" hidden="yes"/>
+<input type="button" id="What" value="What is going on" hidden="yes"/>
+<p id="big"> </p>
+<p id="idk" hidden="yes"> What!?!!</p>
 <script	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script	src="code.js"></script>
 </body>
