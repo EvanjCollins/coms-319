@@ -15,11 +15,11 @@ function registerUser(){
                 	async: false,
                 	success: function(data) {
                         	if(data.message.length == 0){
-					userNameAvailable = true;
-				}else{
-					userNameAvailable = false;
-				}
-				console.log(data);
+														userNameAvailable = true;
+													}else{
+														userNameAvailable = false;
+													}
+													console.log(data);
                 	}
         	});
 	}
