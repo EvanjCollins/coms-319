@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+  <script src="eventPageScript.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+  <head>
+    <meta charset="utf-8">
+    <title>Events</title>
+    <h1>Welcome</h1>
+  </head>
+
+  <body onload="eventGetRequest()">
+
+    <div id="createEventTable">
+    <p>
+    	<form>
+      	<table border="1" style="width:680px">
+      	  <tr>
+      	    <th> Create New Event </th>
+      	  </tr>
+      	  <tr>
+      	    <td> Event Name: <input type="text" id="eventName" size="110" placeholder="Name of Event"></td>
+      	  </tr>
+      	  <tr>
+      	    <td> Event Description: <input type="text" id="eventDescription" size="110" style="height:50px" placeholder="Description of Event"></td>
+      	  </tr>
+      	  <tr>
+      	    <td> Invite Friends:  <input type="text" id="invitedFriends" size="110" placeholder="Steve, John, Will"></td>
+      	  </tr>
+      	</table>
+    	  <input type="button" id="submit" value="Submit" onclick="createNewEvent()">
+    	</form>
+      <div id="eventAvail"></div>
+    </p>
+
+    <p>
+      <div id="tableHere"></div>
+    </p>
+    </div>
+
+  </body>
+
+</html>
