@@ -32,8 +32,14 @@
   $data1 = "True";
   $data2 = "False";
   header('Content-type: application/json');
-  if ($validLogin) echo json_encode( $data1 );
-  else echo json_encode( $data2 );
+  if ($validLogin) {
+    echo json_encode($data1);
+    $_SESSION['username'] = $username;
+  }
+  else {
+    echo json_encode($data2);
+  }
+
 
   #if($validLogin){
   #  header('x', true, 200);
@@ -44,7 +50,7 @@
 
   fclose($file);
 
-  session_destroy();
+  #session_destroy();
 
 
 

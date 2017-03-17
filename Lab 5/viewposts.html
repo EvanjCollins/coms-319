@@ -1,10 +1,71 @@
 <!DOCTYPE html>
 <html>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <head>
     <meta charset="utf-8">
     <title>View Posts</title>
   </head>
   <body>
+    <form>
+      <table border="1" style="width:680px">
+        <tr>
+          <th> Create New Post:</th>
+        </tr>
+        <tr>
+          <td> Title: <input type="text" id="postTitle" size="110" placeholder="Post Title"></td>
+        </tr>
+        <tr>
+          <td> Description: <input type="text" id="postDescription" size="110" style="height:50px" placeholder="Post Description"></td>
+        </tr>
+      </table>
+      <input type="button" id="createPost" value="Submit">
+    </form>
+    <div id="errorDiv">
+
+    </div>
+
     <h1>Posts:</h1>
+    <div id="postTable"></div>
+
+
+    <script type="text/javascript">
+      var btn = document.getElementById("createPost");
+      btn.onclick = function () {
+        var title = document.getElementById('postTitle').value;
+        var description = document.getElementById('postDescription').value;
+
+        if(title && description){
+          if(errorDiv.hasChildNodes()){
+      			errorDiv.removeChild(errorDiv.childNodes[0]);
+      		}
+          $(document).ready(function() {
+
+              $.ajax({
+                  url:"updatePosts.php", //the page containing php script
+                  type: "post", //request type,
+                  dataType: 'html',
+                  data: {action: "createPost", title: title, description: description},
+                  success: function() {
+                    //console.log(data);
+                 }
+               });
+          })
+
+        }
+        else{
+          errorDiv = document.getElementById("errorDiv");
+          var message = document.createTextNode("Both fields must be filled out.");
+          if(errorDiv.hasChildNodes()){
+      			errorDiv.removeChild(errorDiv.childNodes[0]);
+      			errorDiv.appendChild(message);
+      		}else{
+      			errorDiv.appendChild(message);
+      		}
+        }
+      }
+
+    </script>
+
+
   </body>
 </html>
