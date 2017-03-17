@@ -24,23 +24,22 @@
             $.ajax({
                 url:"signup.php", //the page containing php script
                 type: "post", //request type,
-                dataType: 'json',
+                dataType: 'html',
                 data: {username: username, password: pass1},
-                success: function(data){
-                 console.log(data);
+                success: function() {
+                  window.location.href = "index.html";
+                  //console.log(data);
                }
              });
-          });
+          })
         }
         else{
           errorDiv = document.getElementById("errorDiv");
           var message = document.createTextNode("Passwords Don't Match");
           if(errorDiv.hasChildNodes()){
-            alert("if");
       			errorDiv.removeChild(errorDiv.childNodes[0]);
       			errorDiv.appendChild(message);
       		}else{
-            alert("else");
       			errorDiv.appendChild(message);
       		}
         }
