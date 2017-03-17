@@ -20,13 +20,24 @@
 
         $(document).ready(function() {
           $.ajax({
-              url:"login.php", //the page containing php script
+              url:"checkLogin.php", //the page containing php script
               type: "post", //request type,
               dataType: 'html',
               data: {username: username, password: pass},
-              success: function() {
-                //window.location.href = "viewposts.html";
-                //console.log(data);
+              success: function(data) {
+                if(data == "\"True\""){
+                  window.location.href = "viewposts.html";
+                }
+                else{
+                  var errorDiv = document.getElementById('errorDiv');
+                  var message = document.createTextNode("Invalid Login");
+                  if(errorDiv.hasChildNodes()){
+              			errorDiv.removeChild(errorDiv.childNodes[0]);
+              			errorDiv.appendChild(message);
+              		}else{
+              			errorDiv.appendChild(message);
+              		}
+                }
              },
              error: function() {
                var errorDiv = document.getElementById('errorDiv');

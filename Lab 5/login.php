@@ -8,4 +8,6 @@
 
   header('x', false, 404);
 
+  session_destroy();
+
 ?>

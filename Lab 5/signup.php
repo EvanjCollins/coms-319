@@ -33,8 +33,14 @@
     echo ( "Error in opening file" );
     exit();
   }
-  $writeString = $username . ":" . $password . ":" . $publickey . ":" . $privatekey;
-  fwrite($file, $writeString);
+
+  $jsonEntry = array('username' => $_POST['username'], 'password' => $_POST['password'],
+                      'publickey' => $publickey, 'privatekey' => $privatekey);
+  $jsonEntry = json_encode($jsonEntry);
+
+  #$writeString = $username . ":" . $password . ":" . $publickey . ":" . $privatekey;
+  fwrite($file, $jsonEntry);
+  fwrite($file, '$$$');
 
   fclose($file);
   session_destroy();
