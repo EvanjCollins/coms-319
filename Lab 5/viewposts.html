@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
   <head>
     <meta charset="utf-8">
     <title>View Posts</title>
@@ -20,12 +21,26 @@
       </table>
       <input type="button" id="createPost" value="Submit">
     </form>
-    <div id="errorDiv">
-
-    </div>
+    <div id="errorDiv"></div>
+    <br>
+    <h3>Messages:</h3>
+    <input type="button" id="inbox" value="Inbox">
+    <input type="button" id="message" value="Send Message">
+    <div id="messagePopup"></div>
 
     <h1>Posts:</h1>
     <div id="postTable"></div>
+
+    <script type="text/javascript">
+    $.ajax({
+        url:"viewPosts.php", //the page containing php script
+        type: "get", //request type,
+        dataType: 'html',
+        success: function(data) {
+          $('#postTable').append(data);
+       }
+     });
+    </script>
 
 
     <script type="text/javascript">
@@ -63,9 +78,50 @@
       		}
         }
       }
-
     </script>
 
+    <script type="text/javascript">
+      function sendMessage() {
+        var to = document.getElementById('toField');
+        var from = document.getElementById('fromField');
+        var mess = document.getElementById('messageText');
+
+        var popUp = document.getElementById('messagePopup');
+        while(popUp.hasChildNodes()){
+          popUp.removeChild(popUp.childNodes[0]);
+        }
+      }
+
+      var messageBtn = document.getElementById('message');
+      messageBtn.onclick = function() {
+
+        $(document).ready(function() {
+          /*
+          $('#messagePopup').dialog({
+            open: function(){
+
+            }
+
+          });
+          */
+
+          $('#messagePopup').append("<br>");
+          $('#messagePopup').append(document.createTextNode("To:"));
+          $('#messagePopup').append("<input type=\"text\" id=\"toField\" placeholder=\"Name\">");
+          $('#messagePopup').append("<br>");
+          $('#messagePopup').append(document.createTextNode("From:"));
+          $('#messagePopup').append("<input type=\"text\" id=\"fromField\" placeholder=\"Name\">");
+          $('#messagePopup').append("<br>");
+          $('#messagePopup').append(document.createTextNode("Message:"));
+          $('#messagePopup').append("<input type=\"text\" id=\"messageText\" style=\"height:50px\" size=\"110\"placeholder=\"Message\">");
+          $('#messagePopup').append("<br>");
+          $('#messagePopup').append("<input type=\"button\" id=\"messageSubmit\" onclick=\"sendMessage()\"value=\"Submit\">");
+        });
+
+
+
+      }
+    </script>
 
   </body>
 </html>
