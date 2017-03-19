@@ -32,14 +32,29 @@
     <div id="postTable"></div>
 
     <script type="text/javascript">
-    $.ajax({
-        url:"viewPosts.php", //the page containing php script
-        type: "get", //request type,
-        dataType: 'html',
-        success: function(data) {
-          $('#postTable').append(data);
-       }
-     });
+
+    function buildTable(){
+      $.ajax({
+          url:"viewPosts.php", //the page containing php script
+          type: "get", //request type,
+          dataType: 'html',
+          success: function(data) {
+            $('#postTable').append(data);
+         }
+       });
+    }
+
+    function clearTable() {
+      $(document).ready(function () {
+        var table = document.getElementById('postTable');
+        while(table.hasChildNodes()){
+          table.removeChild(table.childNodes[0]);
+        }
+      })
+    }
+
+    buildTable();
+
     </script>
 
 
@@ -122,6 +137,7 @@
 
       }
     </script>
+
 
   </body>
 </html>

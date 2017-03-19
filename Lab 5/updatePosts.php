@@ -36,18 +36,46 @@
       $currPosts = json_decode($fileString);
 
       for($i = 0; $i < sizeof($currPosts); $i++){
+        #echo gettype($currPosts[$i]);
         array_push($writeData, $currPosts[$i]);
       }
       #var_dump($writeData);
       $file = fopen($filename, 'w');
+      #echo gettype($writeData);
       fwrite($file, json_encode($writeData));
 
     }
 
   }
 
-  elseif ($_POST['action'] == "editPost") {
-    
+  elseif ($_POST['action'] == "updatePost") {
+    $filename = "posts.txt";
+    $fileString = file_get_contents($filename);
+    $jsonPosts = json_decode($fileString);
+    #var_dump($jsonPosts);
+
+    $writeData = array();
+
+    for($i = 0; $i < sizeof($jsonPosts); $i++){
+      $singleObj = $jsonPosts[$i];
+      $singleObj = json_decode($singleObj);
+
+      $postID = $singleObj -> postID;
+      //modify if matches
+      if($postID == $_POST['postID']){
+        $singleObj -> postDescription = $_POST['description'];
+        #var_dump($singleObj);
+      }
+      //push onto new array
+      #echo gettype($singleObj);
+      array_push($writeData, json_encode($singleObj));
+
+    }
+    #var_dump($writeData);
+    //write back
+    $newFile = fopen($filename, 'w');
+    #echo gettype($writeData);
+    fwrite($newFile, json_encode($writeData));
   }
 
 
