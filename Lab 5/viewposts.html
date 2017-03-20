@@ -111,14 +111,6 @@
       messageBtn.onclick = function() {
 
         $(document).ready(function() {
-          /*
-          $('#messagePopup').dialog({
-            open: function(){
-
-            }
-
-          });
-          */
 
           $('#messagePopup').append("<br>");
           $('#messagePopup').append(document.createTextNode("To:"));
@@ -131,6 +123,7 @@
           $('#messagePopup').append("<input type=\"text\" id=\"messageText\" style=\"height:50px\" size=\"110\"placeholder=\"Message\">");
           $('#messagePopup').append("<br>");
           $('#messagePopup').append("<input type=\"button\" id=\"messageSubmit\" onclick=\"sendMessage()\"value=\"Submit\">");
+
         });
 
 
@@ -138,6 +131,26 @@
       }
     </script>
 
+    <br>
+    <input type="button" id="logout" value="Logout">
+    <script type="text/javascript">
+
+      var logoutBtn = document.getElementById('logout');
+      logoutBtn.onclick = function() {
+
+        $(document).ready(function() {
+        $.ajax({
+            url:"logout.php", //the page containing php script
+            type: "get", //request type,
+            dataType: 'html',
+            success: function(data) {
+              window.location = "index.html";
+           }
+         });
+       });
+      }
+
+    </script>
 
   </body>
 </html>
