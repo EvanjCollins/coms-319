@@ -24,6 +24,9 @@
       $currPass = $jsonObject -> password;
       if($currPass == $password){
         $validLogin = true;
+        $_SESSION['username'] = $username;
+        $_SESSION['publicKey'] = $jsonObject -> publickey;
+        $_SESSION['privatekey'] = $jsonObject -> privatekey;
       }
     }
 
@@ -34,7 +37,6 @@
   header('Content-type: application/json');
   if ($validLogin) {
     echo json_encode($data1);
-    $_SESSION['username'] = $username;
   }
   else {
     echo json_encode($data2);

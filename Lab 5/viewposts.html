@@ -76,7 +76,8 @@
                   dataType: 'html',
                   data: {action: "createPost", title: title, description: description},
                   success: function() {
-                    //console.log(data);
+                    clearTable();
+                    buildTable();
                  }
                });
           })
@@ -97,9 +98,22 @@
 
     <script type="text/javascript">
       function sendMessage() {
-        var to = document.getElementById('toField');
-        var from = document.getElementById('fromField');
-        var mess = document.getElementById('messageText');
+        var to = document.getElementById('toField').value;
+        var from = document.getElementById('fromField').value;
+        var mess = document.getElementById('messageText').value;
+
+        $(document).ready(function() {
+          $.ajax({
+              url:"sendMessage.php", //the page containing php script
+              type: "post", //request type,
+              dataType: 'html',
+              data: {to: to, from: from, message: mess},
+              success: function(data) {
+                alert("Message Sent");
+             }
+           });
+       });
+
 
         var popUp = document.getElementById('messagePopup');
         while(popUp.hasChildNodes()){
@@ -139,14 +153,14 @@
       logoutBtn.onclick = function() {
 
         $(document).ready(function() {
-        $.ajax({
-            url:"logout.php", //the page containing php script
-            type: "get", //request type,
-            dataType: 'html',
-            success: function(data) {
-              window.location = "index.html";
-           }
-         });
+          $.ajax({
+              url:"logout.php", //the page containing php script
+              type: "get", //request type,
+              dataType: 'html',
+              success: function(data) {
+                window.location = "index.html";
+             }
+           });
        });
       }
 
