@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <head>
     <meta charset="utf-8">
     <title>''</title>
   </head>
   <body>
+    <h1>Inbox:</h1>
+    <div id="inboxTable"></div>
 
     <script type="text/javascript">
-    
+
       $(document).ready(function() {
         $.ajax({
             url:"inbox.php", //the page containing php script
             type: "get", //request type,
             dataType: 'html',
             success: function(data) {
-
+              $('#inboxTable').append(data);
            }
          });
      });
