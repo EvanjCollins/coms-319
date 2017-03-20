@@ -49,6 +49,7 @@
   }
 
   elseif ($_POST['action'] == "updatePost") {
+
     $filename = "posts.txt";
     $fileString = file_get_contents($filename);
     $jsonPosts = json_decode($fileString);
@@ -59,16 +60,24 @@
     for($i = 0; $i < sizeof($jsonPosts); $i++){
       $singleObj = $jsonPosts[$i];
       $singleObj = json_decode($singleObj);
+      $writeData;
 
+      $postUser = $singleObj -> userID;
       $postID = $singleObj -> postID;
       //modify if matches
       if($postID == $_POST['postID']){
-        $singleObj -> postDescription = $_POST['description'];
+        if($_SESSION['username'] == $postUser || $_SESSION['username'] == 'admin'){
+          $singleObj -> postDescription = $_POST['description'];
+        }
         #var_dump($singleObj);
       }
       //push onto new array
       #echo gettype($singleObj);
-      array_push($writeData, json_encode($singleObj));
+      if($_SESSION['username'] == 'admin' && $_POST['description'] == 'delete' && $postID == $_POST['postID']){
+        //don't push message
+      }else{
+        array_push($writeData, json_encode($singleObj));
+      }
 
     }
     #var_dump($writeData);
