@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <title>View Posts</title>
+  </head>
+  <body>
+    <form>
+      <table border="1" style="width:680px">
+        <tr>
+          <th> Create New Post:</th>
+        </tr>
+        <tr>
+          <td> Title: <input type="text" id="postTitle" size="110" placeholder="Post Title"></td>
+        </tr>
+        <tr>
+          <td> Description: <input type="text" id="postDescription" size="110" style="height:50px" placeholder="Post Description"></td>
+        </tr>
+      </table>
+      <input type="button" id="createPost" value="Submit">
+    </form>
+    <div id="errorDiv"></div>
+    <br>
+    <h3>Messages:</h3>
+    <input type="button" id="inbox" value="Inbox">
+    <input type="button" id="message" value="Send Message">
+    <div id="messagePopup"></div>
+
+    <h1>Posts:</h1>
+    <div id="postTable"></div>
+
+    <script type="text/javascript">
+
+    function buildTable(){
+      $.ajax({
+          url:"viewPosts.php", //the page containing php script
+          type: "get", //request type,
+          dataType: 'html',
+          success: function(data) {
+            $('#postTable').append(data);
+         }
+       });
+    }
+
+    function clearTable() {
+      $(document).ready(function () {
+        var table = document.getElementById('postTable');
+        while(table.hasChildNodes()){
+          table.removeChild(table.childNodes[0]);
+        }
+      })
+    }
+
+    buildTable();
+
+    </script>
+
+
+    <script type="text/javascript">
+      var btn = document.getElementById("createPost");
+      btn.onclick = function () {
+        var title = document.getElementById('postTitle').value;
+        var description = document.getElementById('postDescription').value;
+
+        if(title && description){
+          if(errorDiv.hasChildNodes()){
+      			errorDiv.removeChild(errorDiv.childNodes[0]);
+      		}
+          $(document).ready(function() {
+
+              $.ajax({
+                  url:"updatePosts.php", //the page containing php script
+                  type: "post", //request type,
+                  dataType: 'html',
+                  data: {action: "createPost", title: title, description: description},
+                  success: function() {
+                    clearTable();
+                    buildTable();
+                 }
+               });
+          })
+
+        }
+        else{
+          errorDiv = document.getElementById("errorDiv");
+          var message = document.createTextNode("Both fields must be filled out.");
+          if(errorDiv.hasChildNodes()){
+      			errorDiv.removeChild(errorDiv.childNodes[0]);
+      			errorDiv.appendChild(message);
+      		}else{
+      			errorDiv.appendChild(message);
+      		}
+        }
+      }
+    </script>
+
+    <script type="text/javascript">
+      function sendMessage() {
+        var to = document.getElementById('toField').value;
+        var from = document.getElementById('fromField').value;
+        var mess = document.getElementById('messageText').value;
+
+        $(document).ready(function() {
+          $.ajax({
+              url:"sendMessage.php", //the page containing php script
+              type: "post", //request type,
+              dataType: 'html',
+              data: {to: to, from: from, message: mess},
+              success: function(data) {
+                alert("Message Sent");
+             }
+           });
+       });
+
+
+        var popUp = document.getElementById('messagePopup');
+        while(popUp.hasChildNodes()){
+          popUp.removeChild(popUp.childNodes[0]);
+        }
+      }
+
+      var messageBtn = document.getElementById('message');
+      messageBtn.onclick = function() {
+
+        $(document).ready(function() {
+
+          $('#messagePopup').append("<br>");
+          $('#messagePopup').append(document.createTextNode("To:"));
+          $('#messagePopup').append("<input type=\"text\" id=\"toField\" placeholder=\"Name\">");
+          $('#messagePopup').append("<br>");
+          $('#messagePopup').append(document.createTextNode("From:"));
+          $('#messagePopup').append("<input type=\"text\" id=\"fromField\" placeholder=\"Name\">");
+          $('#messagePopup').append("<br>");
+          $('#messagePopup').append(document.createTextNode("Message:"));
+          $('#messagePopup').append("<input type=\"text\" id=\"messageText\" style=\"height:50px\" size=\"110\"placeholder=\"Message\">");
+          $('#messagePopup').append("<br>");
+          $('#messagePopup').append("<input type=\"button\" id=\"messageSubmit\" onclick=\"sendMessage()\"value=\"Submit\">");
+
+        });
+
+
+
+      }
+    </script>
+
+    <br>
+    <input type="button" id="logout" value="Logout">
+    <script type="text/javascript">
+
+      var logoutBtn = document.getElementById('logout');
+      logoutBtn.onclick = function() {
+
+        $(document).ready(function() {
+          $.ajax({
+              url:"logout.php", //the page containing php script
+              type: "get", //request type,
+              dataType: 'html',
+              success: function(data) {
+                window.location = "index.html";
+             }
+           });
+       });
+      }
+
+    </script>
+
+    <script type="text/javascript">
+      var inboxBtn = document.getElementById('inbox');
+      inboxBtn.onclick = function() {
+        window.location = "inbox.html";
+      }
+    </script>
+
+  </body>
+</html>
