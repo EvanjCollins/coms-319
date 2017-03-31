@@ -104,6 +104,8 @@
   else{
     $tinyInt = 1;
   }
+  $password = md5($password);
+
   $sql = "INSERT INTO users(Username, Password, Email, Phone, Librarian, FirstName, LastName) VALUES('".$username."', '".$password."', '".$email."', '".$phone."', '".$tinyInt."', '".$firstName."', '".$lastName ."')";
   echo $sql;
   if ($conn->query($sql) === TRUE) {

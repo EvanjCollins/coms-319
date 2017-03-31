@@ -20,13 +20,24 @@
 
         $(document).ready(function() {
           $.ajax({
-              url:"checkLogin.php", //the page containing php script
+              url:"login.php", //the page containing php script
               type: "post", //request type,
               dataType: 'html',
               data: {username: username, password: pass},
               success: function(data) {
                 if(data == "\"True\""){
-                  window.location.href = "viewposts.html";
+                  //console.log("data == true");
+                  window.location.href = "main.html";
+                }
+                else if(data == "\"Incomplete\""){
+                  var errorDiv = document.getElementById('errorDiv');
+                  var message = document.createTextNode("Not all fields are filled out");
+                  if(errorDiv.hasChildNodes()){
+              			errorDiv.removeChild(errorDiv.childNodes[0]);
+              			errorDiv.appendChild(message);
+              		}else{
+              			errorDiv.appendChild(message);
+              		}
                 }
                 else{
                   var errorDiv = document.getElementById('errorDiv');

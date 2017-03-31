@@ -21,7 +21,7 @@ CREATE TABLE books (
 );
 
 CREATE TABLE loanHistory (
-    Username VARCHAR(255),
+    UserName VARCHAR(255),
     BookId INT(10),
     DueDate DATE,
     ReturnedDate DATE,
@@ -40,7 +40,13 @@ CREATE TABLE bookLocation (
     PRIMARY KEY (BookId)
 );
 
+/*Select Test
+Commands*/
 
+SELECT 
+    *
+FROM
+    users;
 
 
 
