@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome</title>
+  </head>
+  <body>
+    <div id="loadHere"></div>
+  </body>
+
+  <script type="text/javascript">
+  $(document).ready(function() {
+    $.ajax({
+        url:"main.php", //the page containing php script
+        type: "get", //request type,
+        dataType: 'html',
+        success: function(data) {
+          $('#loadHere').append(data);
+        }
+     });
+  })
+  </script>
+</html>

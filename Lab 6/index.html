@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <title>Welcome</title>
+    <h1>Welcome!</h1>
+  </head>
+  <body>
+    <input type="text" id="usernameInput" name="usernameInput" placeholder="Username"><div id="usernameDiv"></div><br>
+    <input type="password" id="passwordInput" name="passwordInput" placeholder="Password"><div id="passDiv"></div><br>  </body>
+    <input type="button" id="loginButton" name="loginButton" value="Login"><div id="loginDiv"></div>
+    <div id="errorDiv"></div>
+
+    <script type="text/javascript">
+      var btn = document.getElementById("loginButton");
+      btn.onclick = function() {
+        username = document.getElementById("usernameInput").value;
+        pass = document.getElementById("passwordInput").value;
+
+        $(document).ready(function() {
+          $.ajax({
+              url:"login.php", //the page containing php script
+              type: "post", //request type,
+              dataType: 'html',
+              data: {username: username, password: pass},
+              success: function(data) {
+                if(data == "\"True\""){
+                  //console.log("data == true");
+                  window.location.href = "main.html";
+                }
+                else if(data == "\"Incomplete\""){
+                  var errorDiv = document.getElementById('errorDiv');
+                  var message = document.createTextNode("Not all fields are filled out");
+                  if(errorDiv.hasChildNodes()){
+              			errorDiv.removeChild(errorDiv.childNodes[0]);
+              			errorDiv.appendChild(message);
+              		}else{
+              			errorDiv.appendChild(message);
+              		}
+                }
+                else{
+                  var errorDiv = document.getElementById('errorDiv');
+                  var message = document.createTextNode("Invalid Login");
+                  if(errorDiv.hasChildNodes()){
+              			errorDiv.removeChild(errorDiv.childNodes[0]);
+              			errorDiv.appendChild(message);
+              		}else{
+              			errorDiv.appendChild(message);
+              		}
+                }
+             },
+             error: function() {
+               var errorDiv = document.getElementById('errorDiv');
+               var message = document.createTextNode("Invalid Login");
+               if(errorDiv.hasChildNodes()){
+           			errorDiv.removeChild(errorDiv.childNodes[0]);
+           			errorDiv.appendChild(message);
+           		}else{
+           			errorDiv.appendChild(message);
+           		}
+             }
+           });
+        })
+
+      }
+    </script>
+
+    <p>Not Registered?</p>
+    <a href="signup.html">Register Here!</a>
+</html>
