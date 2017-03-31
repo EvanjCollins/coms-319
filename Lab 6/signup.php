@@ -1,6 +1,31 @@
 <?php
 
   session_start();
+
+  class Student {
+    function Student($username, $password, $email, $phone, $firstname, $lastname) {
+        $this->UserName = $username;
+        $this->Password = $password;
+        $this->Email = $email;
+        $this->Phone = $phone;
+        $this->librarianBool = 0;
+        $this->FirstName = $firstname;
+        $this->LastName = $lastname;
+    }
+  }
+
+  class Librarian {
+    function Librarian($username, $password, $email, $phone, $firstname, $lastname) {
+      $this->UserName = $username;
+      $this->Password = $password;
+      $this->Email = $email;
+      $this->Phone = $phone;
+      $this->librarianBool = 1;
+      $this->FirstName = $firstname;
+      $this->LastName = $lastname;
+    }
+  }
+
   # error array
   $notset = [];
 
@@ -97,16 +122,16 @@
 
   #$email = $conn->real_escape_string($email);
   #$escapedEmail = '\'' . $email . '\'';
-  $tinyInt;
+  #$tinyInt;
   if($libBool == "false"){
-    $tinyInt = 0;
+    $user = new Student($username, md5($password), $email, $phone, $firstName, $lastName);
   }
   else{
-    $tinyInt = 1;
+    $user = new Librarian($username, md5($password), $email, $phone, $firstName, $lastName);
   }
-  $password = md5($password);
+  #$password = md5($password);
 
-  $sql = "INSERT INTO users(Username, Password, Email, Phone, Librarian, FirstName, LastName) VALUES('".$username."', '".$password."', '".$email."', '".$phone."', '".$tinyInt."', '".$firstName."', '".$lastName ."')";
+  $sql = "INSERT INTO users(Username, Password, Email, Phone, Librarian, FirstName, LastName) VALUES('".$user->UserName."', '".$user->Password."', '".$user->Email."', '".$user->Phone."', '".$user->librarianBool."', '".$user->FirstName."', '".$user->LastName ."')";
   #echo $sql;
   if ($conn->query($sql) === TRUE) {
       echo "User added";

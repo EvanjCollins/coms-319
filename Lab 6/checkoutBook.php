@@ -41,7 +41,7 @@
     else{
       $date = date("Y-m-d");
       $sqlDate = date('Y-m-d', strtotime($date));
-      $sql = "UPDATE loanHistory SET DueDate = '".$sqlDate."' WHERE BookId = ".$_POST['BookId'].";";
+      $sql = "UPDATE loanHistory SET DueDate = '".$sqlDate."', ReturnedDate = NULL WHERE BookId = ".$_POST['BookId'].";";
       if ($conn->query($sql) === TRUE) {
           echo "Updated Availability";
       } else {
