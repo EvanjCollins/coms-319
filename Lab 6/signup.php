@@ -107,7 +107,7 @@
   $password = md5($password);
 
   $sql = "INSERT INTO users(Username, Password, Email, Phone, Librarian, FirstName, LastName) VALUES('".$username."', '".$password."', '".$email."', '".$phone."', '".$tinyInt."', '".$firstName."', '".$lastName ."')";
-  echo $sql;
+  #echo $sql;
   if ($conn->query($sql) === TRUE) {
       echo "User added";
   } else {

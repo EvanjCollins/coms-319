@@ -38,7 +38,7 @@
   }
   #echo "Connected successfully";
 
-  $sql = "SELECT Password FROM users WHERE UserName = '". $username ."'";
+  $sql = "SELECT Password, Librarian FROM users WHERE UserName = '". $username ."'";
   $result = $conn->query($sql);
   $row = $result->fetch_assoc();
 
@@ -47,6 +47,7 @@
   if (md5($password) == $row['Password']) {
       $validLogin = true;
       $_SESSION['UserName'] = $username;
+      $_SESSION['Librarian'] = $row['Librarian'];
   } else {
       $validLogin = false;
   }
