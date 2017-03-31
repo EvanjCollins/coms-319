@@ -33,6 +33,7 @@
 
         var dataSubmitted = false;
         var passMatch = false;
+        var validationPass = false;
         var emptyElements = [];
 
         $(document).ready(function() {
@@ -53,16 +54,35 @@
                   if(emptyElements[0] != 'IncPasses'){
                     passMatch = true;
                   }
+                  if(emptyElements[0] != 'validateError'){
+                    validationPass = true;
+                  }
                 }
                 catch (err){
                   //console.log(err);
                   dataSubmitted = true;
-                  //window.location.href = "index.html";
+                  window.location.href = "index.html";
                 }
 
                 if(dataSubmitted == false){
-                  if(emptyElements != undefined  && passMatch){
+                  if(emptyElements != undefined  && passMatch && validationPass){
                     var msg = 'Please Fill Out ';
+                    for(x in emptyElements){
+                      msg += emptyElements[x] + ' ';
+                    }
+                    errorDiv = document.getElementById("errorDiv");
+                    var message = document.createTextNode(msg);
+                    if(errorDiv.hasChildNodes()){
+                			errorDiv.removeChild(errorDiv.childNodes[0]);
+                			errorDiv.appendChild(message);
+                		}else{
+                			errorDiv.appendChild(message);
+                		}
+                  }
+                  else if(emptyElements != undefined  && passMatch){
+                    var msg = 'Incorrect Input: ';
+                    emptyElements.shift();
+                    console.log(emptyElements);
                     for(x in emptyElements){
                       msg += emptyElements[x] + ' ';
                     }
