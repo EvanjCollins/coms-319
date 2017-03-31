@@ -5,7 +5,7 @@ CREATE TABLE users (
     UserName VARCHAR(255),
     Password VARCHAR(255),
     Email VARCHAR(255),
-    Phone INT(10),
+    Phone BIGINT(10),
     Librarian TINYINT,
     FirstName VARCHAR(255),
     LastName VARCHAR(255),
@@ -37,67 +37,65 @@ CREATE TABLE shelves (
 CREATE TABLE bookLocation (
     BookId INT(10),
     ShelfId INT(10),
-    PRIMARY KEY (BookId)
+    PRIMARY KEY (BookId, ShelfId)
 );
 
-/*Select Test
+/*Test
 Commands*/
 
-SELECT 
+SELECT
     *
 FROM
-    users
-WHERE
-	UserName;
+    users;
 
-DROP TABLE loanHistory;
+DROP TABLE users;
 
-SELECT 
+SELECT
     *
 FROM
     books;
 
 INSERT INTO books(BookId, BookTitle, Author, Availability)
 	VALUES (22, 'Second Art', 'ME', 1);
-    
-SELECT 
+
+SELECT
     *
 FROM
     shelves;
 
 INSERT INTO shelves(ShelfId, ShelfName)
 	VALUES(1, 'Art');
-    
+
 INSERT INTO shelves(ShelfId, ShelfName)
 	VALUES(2, 'Science');
-    
+
 INSERT INTO shelves(ShelfId, ShelfName)
-	VALUES(3, 'Sport');    
+	VALUES(3, 'Sport');
 
 INSERT INTO shelves(ShelfId, ShelfName)
 	VALUES(4, 'Literature');
 
-SELECT 
+SELECT
     *
 FROM
     bookLocation;
- 
+
 INSERT INTO bookLocation(BookId, ShelfId)
 	VALUES(123, 1);
-    
+
 INSERT INTO bookLocation(BookId, ShelfId)
 	VALUES(22, 1);
 
 INSERT INTO bookLocation(BookId, ShelfId)
-	VALUES(555, 2);   
-    
+	VALUES(555, 2);
+
 INSERT INTO bookLocation(BookId, ShelfId)
-	VALUES(65656, 3);   
-    
+	VALUES(65656, 3);
+
 INSERT INTO bookLocation(BookId, ShelfId)
 	VALUES(123333, 4);
-    
-SELECT 
+
+SELECT
     *
 FROM
     books
@@ -108,16 +106,35 @@ FROM
 WHERE
     shelves.ShelfName = 'Art'
         AND Availability = 1;
-        
-SELECT 
+
+
+INSERT INTO loanHistory(UserName, BookId)
+	VALUES('testUser', 22);
+
+SELECT
+    *
+FROM
+    loanHistory;
+
+SELECT
     *
 FROM
     books
         INNER JOIN
     loanHistory ON books.BookId = loanHistory.BookId
 WHERE
-    shelves.ShelfName = 'Art'
-        AND Availability = 1;
+    loanHistory.UserName = 'testUser'
+        AND loanHistory.ReturnedDate IS NULL;
 
-    
-    
+SELECT
+    *
+FROM
+    loanHistory
+WHERE
+    Username = 'testUser';
+
+UPDATE books
+SET
+    Availability = 1
+WHERE
+    BookId = 100;
