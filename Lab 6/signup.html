@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <head>
+    <meta charset="utf-8">
+    <title>Register Here</title>
+  </head>
+  <body>
+    <h3>Register:</h3>
+    <input type="text" id="usernameInput" name="usernameInput" placeholder="Username"><div id="usernameDiv"></div><br>
+    <input type="password" id="passwordInput" name="passwordInput" placeholder="Password"><div id="passDiv"></div><br>
+    <input type="password" id="passwordConfirm" name="passwordInput" placeholder="Confirm Password"><div id="passDiv"></div><br>
+    <input type="text" id="emailInput" name="emailInput" placeholder="Email"><div id="emailDiv"></div><br>
+    <input type="text" id="phoneInput" name="phoneInput" placeholder="Phone Number"><div id="phoneDiv"></div><br>
+    Are you a Librarian?
+    <input type="checkbox" id="librarianBoolean" name="librarianBoolean"><div id="libBool"></div><br>
+    <input type="text" id="firstNameInput" name="firstNameInput" placeholder="First Name"><div id="firstNameDiv"></div><br>
+    <input type="text" id="lastNameInput" name="lastNameInput" placeholder="Last Name"><div id="lastNameDiv"></div><br>
+    <input type="button" id="registerButton" name="registerButton" value="Register"><div id="registerDiv"></div>
+    <div id="errorDiv"></div>
+
+    <script type="text/javascript">
+      var btn = document.getElementById("registerButton");
+      btn.onclick = function() {
+        var username = document.getElementById("usernameInput").value;
+        var pass1 = document.getElementById("passwordInput").value;
+        var pass2 = document.getElementById("passwordConfirm").value;
+        var email = document.getElementById('emailInput').value;
+        var phone = document.getElementById('phoneInput').value;
+        var librarianBool = document.getElementById('librarianBoolean').checked;
+        var firstName = document.getElementById('firstNameInput').value;
+        var lastName = document.getElementById('lastNameInput').value;
+
+        var dataSubmitted = false;
+        var passMatch = false;
+        var emptyElements = [];
+
+        $(document).ready(function() {
+          $.ajax({
+              url:"signup.php", //the page containing php script
+              type: "post", //request type,
+              dataType: 'html',
+              data: {username: username, password: pass1, passwordConfirm: pass2,
+                    email: email, phone:phone, librarianBool: librarianBool,
+                    firstName: firstName, lastName: lastName},
+              success: function(data) {
+                try{
+                  jsonObj = JSON.parse(data);
+                  for(x in jsonObj){
+                    emptyElements.push(jsonObj[x]);
+                  }
+                  dataSubmitted = false;
+                  if(emptyElements[0] != 'IncPasses'){
+                    passMatch = true;
+                  }
+                }
+                catch (err){
+                  //console.log(err);
+                  dataSubmitted = true;
+                  //window.location.href = "index.html";
+                }
+
+                if(dataSubmitted == false){
+                  if(emptyElements != undefined  && passMatch){
+                    var msg = 'Please Fill Out ';
+                    for(x in emptyElements){
+                      msg += emptyElements[x] + ' ';
+                    }
+                    errorDiv = document.getElementById("errorDiv");
+                    var message = document.createTextNode(msg);
+                    if(errorDiv.hasChildNodes()){
+                			errorDiv.removeChild(errorDiv.childNodes[0]);
+                			errorDiv.appendChild(message);
+                		}else{
+                			errorDiv.appendChild(message);
+                		}
+                  }
+                  else{
+                    errorDiv = document.getElementById("errorDiv");
+                    var message = document.createTextNode("Passwords Don't Match");
+                    if(errorDiv.hasChildNodes()){
+                			errorDiv.removeChild(errorDiv.childNodes[0]);
+                			errorDiv.appendChild(message);
+                		}else{
+                			errorDiv.appendChild(message);
+                		}
+                  }
+
+                }
+             }
+           });
+        })
+
+      }
+    </script>
+  </body>
+</html>
