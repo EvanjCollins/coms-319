@@ -81,7 +81,7 @@
               dataType: 'html',
               data: {BookId: bookid, Checkout: 2},
               success: function(data) {
-                $('#response').append(data);
+                location.reload();
               }
           })
         )
@@ -306,6 +306,7 @@
     buildAddBook();
     buildDeleteBook();
     buildViewUsers();
+    echo "<br>";
     buildViewAllShelves();
   }
   else{

@@ -14,7 +14,7 @@
   }
 
   echo "<table border=\"1\" style=\"width:680px\">";
-  echo "<th colspan=\"3\">Available Books: </th>";
+  echo "<th colspan=\"4\">Available Books: </th>";
   //Art Shelf
   $sql = "SELECT * FROM loanHistory WHERE Username = '".$_POST['UserName']."';";
   $result = $conn->query($sql);
