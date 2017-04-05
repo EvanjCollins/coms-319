@@ -2,27 +2,6 @@
 
   session_start();
 
-  class Library {
-    function Library() {
-        $this->model = "VW";
-    }
-  }
-
-  class Book {
-    function Book($bookid, $booktitle, $author, $availability) {
-        $this->Bookid = $bookid;
-        $this->BookTitle = $booktitle;
-        $this->Author = $author;
-        $this->Availability = $availability;
-    }
-  }
-
-  class Shelf {
-    function Shelf($shelfid, $shelfname) {
-        $this->ShelfId = $shelfid;
-        $this->ShelfName = $shelfname;
-    }
-  }
 # Class objects that need to be implemented: library, librarian,	student, book, shelf.
 
   function buildAddBook(){
@@ -130,15 +109,15 @@
     }
 
     echo "<table border=\"1\" style=\"width:680px\">";
-    echo "<th colspan=\"3\">Available Books: </th>";
+    echo "<th colspan=\"4\">Available Books: </th>";
     //Art Shelf
     $sql = "SELECT * FROM books INNER JOIN bookLocation ON books.BookId = bookLocation.BookId INNER JOIN
     shelves ON bookLocation.ShelfId = shelves.ShelfId WHERE shelves.ShelfName = 'Art';";
     $result = $conn->query($sql);
     if($result->num_rows > 0){
-      echo "<tr><td colspan=\"3\">Art: </td></tr>";
+      echo "<tr><td colspan=\"4\">Art: </td></tr>";
       while($row = $result->fetch_assoc()){
-        echo "<tr><td>".$row['BookTitle']."</td> <td>".$row['Author']."</td> <td>".$row['Availability']."</td></tr>";
+        echo "<tr><td>".$row['BookTitle']."</td> <td>".$row['BookId']."</td> <td>".$row['Author']."</td> <td>".$row['Availability']."</td></tr>";
       }
     }
 
@@ -147,9 +126,9 @@
     shelves ON bookLocation.ShelfId = shelves.ShelfId WHERE shelves.ShelfName = 'Science';";
     $result = $conn->query($sql);
     if($result->num_rows > 0){
-      echo "<tr><td colspan=\"3\">Science: </td></tr>";
+      echo "<tr><td colspan=\"4\">Science: </td></tr>";
       while($row = $result->fetch_assoc()){
-        echo "<tr><td>".$row['BookTitle']."</td> <td>".$row['Author']."</td> <td>".$row['Availability']."</td></tr>";
+        echo "<tr><td>".$row['BookTitle']."</td> <td>".$row['BookId']."</td> <td>".$row['Author']."</td> <td>".$row['Availability']."</td></tr>";
       }
     }
 
@@ -158,9 +137,9 @@
     shelves ON bookLocation.ShelfId = shelves.ShelfId WHERE shelves.ShelfName = 'Sport';";
     $result = $conn->query($sql);
     if($result->num_rows > 0){
-      echo "<tr><td colspan=\"3\">Sport: </td></tr>";
+      echo "<tr><td colspan=\"4\">Sport: </td></tr>";
       while($row = $result->fetch_assoc()){
-        echo "<tr><td>".$row['BookTitle']."</td> <td>".$row['Author']."</td> <td>".$row['Availability']."</td></tr>";
+        echo "<tr><td>".$row['BookTitle']."</td> <td>".$row['BookId']."</td> <td>".$row['Author']."</td> <td>".$row['Availability']."</td></tr>";
       }
     }
 
@@ -169,9 +148,9 @@
     shelves ON bookLocation.ShelfId = shelves.ShelfId WHERE shelves.ShelfName = 'Literature';";
     $result = $conn->query($sql);
     if($result->num_rows > 0){
-      echo "<tr><td colspan=\"3\">Literature: </td></tr>";
+      echo "<tr><td colspan=\"4\">Literature: </td></tr>";
       while($row = $result->fetch_assoc()){
-        echo "<tr><td>".$row['BookTitle']."</td> <td>".$row['Author']."</td> <td>".$row['Availability']."</td></tr>";
+        echo "<tr><td>".$row['BookTitle']."</td> <td>".$row['BookId']."</td> <td>".$row['Author']."</td> <td>".$row['Availability']."</td></tr>";
       }
     }
     echo "</table>";
