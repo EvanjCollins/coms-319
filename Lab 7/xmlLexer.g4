@@ -39,16 +39,7 @@ fragment JCB: ( [2][1][3][1] | [1][8][0][0] ) DIGIT DIGIT DIGIT DIGIT DIGIT DIGI
 fragment CREDITCARD: VISA | MASTERCARD | AMERICAN | DINERS | DISCOVER | JCB ;
 
 fragment OTHER: ( CHAR | DIGIT | SPECIALCHARACTERS | ' ' )+ ;
+fragment EMAIL: LOCALPART '@' DOMAINPART ;
 
-TAG: ( ELEMENTTAG | ELEMENTCLOSETAG )
-	{System.out.println("Found tag: " + getText());} ;
-EMAIL: LOCALPART '@' DOMAINPART
-	{System.out.println("Found email: " + getText());} ;
-FOUNDDATE: DATE
-        {System.out.println("Found date: " + getText());} ;
-FOUNDPHONE: PHONE
-	{System.out.println("Found phone: " + getText());} ;
-FOUNDCREDIT: CREDITCARD
-	{System.out.println("Found credit: " + getText());} ;
-FOUNDOTHER: OTHER
-	{System.out.println("Found other: " + getText());} ;
+XMLELEMENT: ELEMENTTAG (EMAIL | DATE | PHONE | CREDITCARD | OTHER ) ELEMENTCLOSETAG
+	{System.out.println("Found xml element: " + getText());} ;
