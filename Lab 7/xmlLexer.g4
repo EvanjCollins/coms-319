@@ -16,7 +16,7 @@ fragment LOCALPART: ( LOCALPARTNOPERIOD '.'? LOCALPARTNOPERIOD )+ ;
 fragment DOMAINPART: ( ( CHAR | DIGIT | '-' ) '.'? ( CHAR | DIGIT | '-' ) )+ . ( CHAR | DIGIT ) ;
 
 fragment DAY: [0][1-9] | [12][0-9] | [3][01] ;
-fragment MONTH: [0][0-9] | [1][012] ;
+fragment MONTH: [0][1-9] | [1][012] ;
 fragment YEAR: [2][0][0-9][0-9] | [2][1][0][0] ;
 fragment DATE: DAY '/' MONTH '/' YEAR ;
 

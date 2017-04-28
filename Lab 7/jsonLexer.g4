@@ -1,5 +1,15 @@
 lexer grammar jsonLexer;
 
+@lexer::header {
+  import java.util.List;
+  import java.util.Arrays;
+  import java.util.ArrayList;
+}
+
+@members {
+    public List<String> errors = new ArrayList<String>();
+}
+
 fragment CHAR: [a-zA-Z] ;
 fragment DIGIT: [0-9] ;
 fragment ALLBUTX: [a-wyzA-WYZ] ;
@@ -15,7 +25,7 @@ fragment LOCALPART: ( LOCALPARTNOPERIOD '.'? LOCALPARTNOPERIOD )+ ;
 fragment DOMAINPART: ( ( CHAR | DIGIT | '-' ) '.'? ( CHAR | DIGIT | '-' ) )+ . ( CHAR | DIGIT ) ;
 
 fragment DAY: [0][1-9] | [12][0-9] | [3][01] ;
-fragment MONTH: [0][0-9] | [1][012] ;
+fragment MONTH: [0][1-9] | [1][012] ;
 fragment YEAR: [2][0][0-9][0-9] | [2][1][0][0] ;
 fragment DATE: DAY '/' MONTH '/' YEAR ;
 
@@ -41,4 +51,10 @@ fragment OTHER: ( CHAR | DIGIT | SPECIALCHARACTERS | ' ' )+ ;
 fragment EMAIL: LOCALPART '@' DOMAINPART ;
 
 JSONELEMENT: JSONNAME ':' ' '? '"' (EMAIL | DATE | PHONE | CREDITCARD | OTHER ) '"'
-	{System.out.println("Found xml element: " + getText());} ;
+	{
+		if (!errors.isEmpty()) {
+              		System.out.println(errors);
+             		errors.clear();
+           	}
+		System.out.println("Found xml element: " + getText());
+	} ;
