@@ -1,0 +1,106 @@
+<html>
+<head>
+  <script	src="jquery.min.js"></script>
+  <script src="setting.js"></script>
+  <link rel="stylesheet" type="text/css" href="theme.css">
+  <script src="/jquerycookie/jquery.cookie.js"></script>
+  <!-- <script src="dropdown.js"></script> -->
+</head>
+<style>
+  button{
+    border:none;
+  }
+  body{
+    position: relative;
+    width: 200px;
+    height: 200px;
+  }
+  #check1,#check2{
+    width : 20px;
+    height : 20px;
+    background-color : gray;
+  }
+  #deleteNote, #hideloc, #hideweather{
+    background-color: gray;
+  }
+  .back {
+      position: absolute;
+      background-image: url(back.png);
+      background-color: transparent;
+      background-repeat: no-repeat;
+      border: none;
+      height: 35px;
+      width: 35px;
+      right: 0px;
+      top:0px;
+  }
+  .save {
+      position: absolute;
+      background-image: url(save.png);
+      background-color: transparent;
+      background-repeat: no-repeat;
+      border: none;
+      height: 35px;
+      width: 35px;
+      right: 0px;
+      top:40px;
+  }
+  /* Dropdown Button */
+.dropbtn {
+    background-color: black;
+    color: white;
+    font-size: 8px;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+}
+
+/* Dropdown button on hover & focus */
+.dropbtn:hover, .dropbtn:focus {
+    background-color: black;
+}
+
+/* The container <div> - needed to position the dropdown content */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Dropdown Content (Hidden by Default) */
+.dropdown-content {
+    display: none;
+    position: relative;
+    background-color: black;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+}
+
+/* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
+.show {display:block;}
+</style>
+<body>
+  <h2> Settings </h2>
+  <button id="back" class="back"> </button>
+  <button id="save" class="save"> </button>
+  <div class="dropdown">
+  <button id="dropbtn" class="dropbtn"></button>
+  <div id="myDropdown" class="dropdown-content">
+    <button id="theme1" class="theme1">Morning Sky</button>
+    <button id="theme2" class="theme2">Midnight Lightning</button>
+    <button id="theme3" class="theme3">Nature Walk</button>
+    <button id="theme4" class="theme4">Dream land</button>
+    <button id="theme5" class="theme5">Shadow Fire</button>
+  </div>
+  </div>
+  <br><br>
+  <div>
+  <p id="check1"> </p>
+  <input type="button" id="hideloc" value="Hide Location"></input>
+  <p id="check2"> </p>
+  <input type="button" id="hideweather" value="Hide Weather"></input>
+  </div>
+  <br><br>
+  <input type="button" id="deleteNote" value="Delete Notes"></input>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<html>
+<head>
+<script	src="jquery.min.js"></script>
+<script src="note.js"></script>
+<script src="/jquerycookie/jquery.cookie.js"></script>
+<!-- <script src="activeTab.js"></script> -->
+</head>
+<style>
+body{
+  width: 200px;
+  height: 200px;
+  background-color: black;
+}
+#notehead{
+  font-size: 200%;
+  font-weight: bold;
+  background-color: #b9c170;
+  width:200px;
+  height:50px;
+  padding-top: 0;
+  padding-left: 0;
+  line-height: 1em;
+  background-color: #b9c170;
+}
+.wideInput{
+     width:200px;
+     height:150px;
+     padding-top: 0;
+     padding-left: 0;
+     line-height: 1em;
+     background-color: #b9c170;
+}
+.back {
+    position: absolute;
+    background-image: url(back.png);
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    height: 35px;
+    width: 35px;
+    right: 0px;
+    top:0px;
+}
+.save {
+    position: absolute;
+    background-image: url(save.png);
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    height: 35px;
+    width: 35px;
+    right: 0px;
+    top:40px;
+}
+</style>
+<body class="paper">
+<textarea id="notehead"> </textarea>
+<textarea id="notebod" class="wideInput"> </textarea>
+<button id="back" class="back"> </button>
+<button id="save" class="save"> </button>
+</body>
+</html>

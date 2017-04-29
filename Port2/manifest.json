@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+
+  "name": "Note Saver and Helper Plus",
+  "description": "This extension gives a popup menu with a weather and stocks api, customizable settings, and a note saver",
+  "version": "1.0",
+
+  "browser_action": {
+    "default_icon": "note.png",
+    "default_popup": "main.html"
+  },
+
+  "content_scripts": [{
+      "js": ["jquery.min.js", "activeTab.js"],
+      "matches": ["http://*/*", "https://*/*"]
+  }],
+
+  "permissions":[
+    "activeTab",
+    "https://ajax.googleapis.com/"
+  ]
+}
