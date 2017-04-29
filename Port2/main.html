@@ -1,0 +1,83 @@
+<html>
+<head>
+<script	src="jquery.min.js"></script>
+<script src="activeTab.js"></script>
+<script src="setting.js"></script>
+<script src="/jquerycookie/jquery.cookie.js"></script>
+<link rel="stylesheet" type="text/css" href="theme.css">
+</head>
+<style type="text/css">
+body{
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+.settings {
+    position: absolute;
+    background-image: url(setting.png);
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    height: 35px;
+    width: 35px;
+    right:0px;
+}
+.add {
+    position: absolute;
+    background-image: url(addnote.png);
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border:none;
+    height: 35px;
+    width: 35px;
+    right: 0px;
+    top:40px;
+}
+#main{
+  font-size: 150%;
+  font-weight: bold;
+}
+a:link {
+    text-decoration: none;
+    color:darkred;
+    background-color:#e1a534;
+}
+/* mouse over link */
+a:hover {
+    color: hotpink;
+}
+.wideInput{
+   width:200px;
+   height:100px;
+   padding-top: 0;
+   padding-left: 0;
+   line-height: 1em;
+   background-color: #b9c170;
+}
+#deleteNote, #showHistory{
+  border:none;
+  background-color: none;
+  color:darkred;
+}
+
+</style>
+<body>
+  <button id="settings" class="settings"></button>
+  <button id="note" class="add"></button>
+  <p id="main"> </p>
+  <text id="weather"> </text>
+  <div id="newnote" hidden="yes">
+    <input type="text" id="notetitle" placeholder="Note Title" style="background-color:#b9c170; width:200px"></input>
+    <textarea type="text" class="wideInput" id="notebody" placeholder="Note Body"></textarea>
+    <input type="button" id="addnote" value="Add Note"></input>
+    <input type="button" id="cancel" value="cancel"></input>
+  </div>
+  <div id="noteutils">
+  <br><br>Notes Taken
+  </div>
+  <div id="notehistory">
+  </div>
+  <br><br>
+</body>
+
+</html>

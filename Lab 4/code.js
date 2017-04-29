@@ -2,7 +2,7 @@
 //   Note: Look at 04_SampleProgram first
 //
 //
-// 
+//
 $(document).ready(function(){
 	//event 1
 	$("input").focus(function(){
@@ -27,13 +27,14 @@ $(document).ready(function(){
 		$("#big").html("Your " + document.getElementById("inp2").value + ", wow you're so old!");
 		//event 5
 		$("#big").hover(function(){
-		//effect 3	
+			console.log("big");
+		//effect 3
 		$("#big").fadeOut("slow");
 		$("#big").css("color", "red"); //css change 3
 		$("#big").html("You're going to die");
 		});
 	}
-	else{	
+	else{
 		$("#big").css("color", "green"); //css change 4
 		$("#big").html("Your" + document.getElementById("inp2").value + ", you're still young!");
 	}
@@ -48,7 +49,7 @@ $(document).ready(function(){
 });
 function createTable(n, m) {
     mytable = $("<table border='2'></table>"); // creates DOM elements
-    mytablebody = $('<tbody></tbody>'); 
+    mytablebody = $('<tbody></tbody>');
 
     for(row = 0; row < n; row++) {
 	      curr_row = $('<tr></tr>');
@@ -57,7 +58,7 @@ function createTable(n, m) {
 			  curr_text = document.getElementById("inp" + col).value;
 			  curr_cell.append(curr_text);
 	          curr_row.append(curr_cell);
-	}
+		}
 		// appends arg to mytablebody
 	    mytablebody.append(curr_row);
     }
