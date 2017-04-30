@@ -67,16 +67,26 @@ class Book{
 
 	setBookId(shelf) {
 		if (shelf == 'art'){
-			var randomNum = Math.floor(Math.random() * 996) + 0;
+			var randomNum = Math.floor(Math.random() * 996);
+			console.log(randomNum);
+			var toAdd = (4 - (randomNum % 4));
+			console.log(toAdd);
+			randomNum += toAdd;
 			this.bookId = randomNum;
 		}else if (shelf == 'science'){
-			var randomNum = Math.floor(Math.random() * 996) + 1;
+			var randomNum = Math.floor(Math.random() * 996);
+			var toAdd = (5 - (randomNum % 4));
+			randomNum += toAdd;
 			this.bookId = randomNum;
 		}else if (shelf == 'sport'){
-			var randomNum = Math.floor(Math.random() * 996) + 2;
+			var randomNum = Math.floor(Math.random() * 996);
+			var toAdd = (6 - (randomNum % 4));
+			randomNum += toAdd;
 			this.bookId = randomNum;
 		}else if (shelf == 'literature'){
-			var randomNum = Math.floor(Math.random() * 996) + 3;
+			var randomNum = Math.floor(Math.random() * 996);
+			var toAdd = (7 - (randomNum % 4));
+			randomNum += toAdd;
 			this.bookId = randomNum;
 		}
 	}
@@ -182,7 +192,7 @@ class Library{ //library
 
 	returnBookObj(bookId) {
 		var bookNum = bookId.toString();
-		bookNum = bookNum.substring(1,4);
+		bookNum = bookNum.substring(0);
 		if (bookNum % 4 == 0){
 			for (var j = 0; j < this.artShelf.getBookShelf().length; j++){
 				var book = this.artShelf.getBookShelf()[j];
@@ -283,6 +293,7 @@ function generateTableCell(bookObj) {
 }
 
 function displayBookInfo(bookId) {
+	console.log(bookId);
 	var bookObj = library.returnBookObj(bookId);
 	var returnString = bookObj.getBookInfo();
 
@@ -292,16 +303,16 @@ function displayBookInfo(bookId) {
 
 function addBookToLibrary(book, shelf) {
 	if (shelf == 'art'){
-		book.setBookId();
+		book.setBookId(shelf);
 		library.addToArt(book);
 	}else if (shelf == 'science'){
-		book.setBookId();
+		book.setBookId(shelf);
 		library.addToScience(book);
 	}else if (shelf == 'sport'){
-		book.setBookId();
+		book.setBookId(shelf);
 		library.addToSport(book);
 	}else if (shelf == 'literature'){
-		book.setBookId();
+		book.setBookId(shelf);
 		library.addToLiterature(book);
 	}
 	var tableObj = $('#tablecreate');

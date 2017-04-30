@@ -191,7 +191,7 @@ class Library{ //library
 
 	libraryCheckout(bookId) {
 		var bookNum = bookId.toString();
-		bookNum = bookNum.substring(1,4);
+		bookNum = bookNum.substring(0);
 		if (bookNum % 4 == 0){
 			for (var j = 0; j < this.artShelf.getBookShelf().length; j++){
 				var book = this.artShelf.getBookShelf()[j];
@@ -228,7 +228,7 @@ class Library{ //library
 
 	returnBookObj(bookId) {
 		var bookNum = bookId.toString();
-		bookNum = bookNum.substring(1,4);
+		bookNum = bookNum.substring(1);
 		if (bookNum % 4 == 0){
 			for (var j = 0; j < this.artShelf.getBookShelf().length; j++){
 				var book = this.artShelf.getBookShelf()[j];
@@ -375,7 +375,6 @@ function checkoutBook(bookId) {
 	}
 
 	var bookCheckoutBool = library.returnBookObj(bookId).getBookAvailability();
-	console.log(checkouts);
 	if (bookCheckoutBool == 1) {
 		if (checkouts < 2){
 			library.libraryCheckout(bookId);
