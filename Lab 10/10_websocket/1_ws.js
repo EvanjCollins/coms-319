@@ -1,4 +1,4 @@
-//---------------------------------------------------------------
+//--------------------------------------------------------------- 
 // The purpose is to introduce you to websockets
 // This is a SERVER that is SEPARATE from the http server.
 //
