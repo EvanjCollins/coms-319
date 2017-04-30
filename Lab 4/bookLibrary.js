@@ -2,10 +2,10 @@
 var library;
 $(document).ready(function(){
 	try {
-		library = localStorage.getItem("library");
+		library = window.localStorage.getItem("library");
 		library = new Library(JSON.parse(library));
 		//library = $.extend(new Library(), library);
-		//library = recastJSON(library);
+		//library = recastJSON(JSON.parse(library));
 	}
 	catch (err) {
 		library = new Library();
@@ -18,17 +18,9 @@ $(document).ready(function(){
 
 	buildLibraryTable(library);
 
-	var addBtn = document.getElementById('addBookBtn');
-	addBtn.onclick = function () {
-		var bookName = document.getElementById('inp4').value;
-		var shelf = document.getElementById('inp5').value;
-		var newBook = Book.createBookWithName(bookName);
-		addBookToLibrary(newBook, shelf);
-	}
-
 	var logoutBtn	= document.getElementById('logout');
 	logoutBtn.onclick = function () {
-		localStorage.setItem("library", JSON.stringify(library));
+		window.localStorage.setItem("library", JSON.stringify(library));
 	}
 
 });
@@ -53,6 +45,8 @@ class Book{
 		this.name = 'B' + randomNum.toString();
 		this.borrowedBy = null;
 		this.available = 1;
+
+		this.objectType = "Book";
   }
 
 	static createBookWithName (name) {
@@ -81,8 +75,21 @@ class Book{
 		}
 	}
 
+	toggleCheckout() {
+		if(this.available == 1){
+			this.available = 0;
+		}
+		else {
+			this.available = 1;
+		}
+	}
+
 	getBookName() {
 		return this.name;
+	}
+
+	getBookAvailability() {
+		return this.available;
 	}
 
 	getBookId() {
@@ -156,6 +163,8 @@ class Shelf{ //shelf
 				}
 			}
 			this.shelf = books;
+
+			this.objectType = "Shelf";
 		}
 	}
 
@@ -178,6 +187,43 @@ class Library{ //library
 		this.literatureShelf = new Shelf("literature");
 
 		this.objectType = "Library";
+	}
+
+	libraryCheckout(bookId) {
+		var bookNum = bookId.toString();
+		bookNum = bookNum.substring(1,4);
+		if (bookNum % 4 == 0){
+			for (var j = 0; j < this.artShelf.getBookShelf().length; j++){
+				var book = this.artShelf.getBookShelf()[j];
+				if (book.getBookId() == bookId){
+					book.toggleCheckout();
+
+				}
+			}
+		}else if (bookNum % 4 == 1){
+			for (var j = 0; j < this.scienceShelf.getBookShelf().length; j++){
+				var book = this.scienceShelf.getBookShelf()[j];
+				if (book.getBookId() == bookId){
+					book.toggleCheckout();
+
+				}
+			}
+		}else if (bookNum % 4 == 2){
+			for (var j = 0; j < this.sportShelf.getBookShelf().length; j++){
+				var book = this.sportShelf.getBookShelf()[j];
+				if (book.getBookId() == bookId){
+					book.toggleCheckout();
+
+				}
+			}
+		}else {
+			for (var j = 0; j < this.literatureShelf.getBookShelf().length; j++){
+				var book = this.literatureShelf.getBookShelf()[j];
+				if (book.getBookId() == bookId){
+					book.toggleCheckout();
+				}
+			}
+		}
 	}
 
 	returnBookObj(bookId) {
@@ -274,7 +320,13 @@ function buildLibraryTable(library){
 function generateTableCell(bookObj) {
 	stringOut = "";
 	try {
-		stringOut += "<td onClick = 'displayBookInfo(" + bookObj.getBookId() + ")'> " + bookObj.getBookName() + "</td>";
+		if (bookObj.getBookAvailability() == 1){
+			stringOut += "<td onClick = 'checkoutBook(" + bookObj.getBookId() + ")'> " + bookObj.getBookName() + "</td>";
+
+		}
+		else {
+			stringOut += "<td bgcolor='red' onClick = 'checkoutBook(" + bookObj.getBookId() + ")'> " + bookObj.getBookName() + "</td>";
+		}
 	}
 	catch (err) {
 		stringOut = "<td></td>"
@@ -307,4 +359,39 @@ function addBookToLibrary(book, shelf) {
 	var tableObj = $('#tablecreate');
 	tableObj.empty();
 	buildLibraryTable(library);
+}
+
+function checkoutBook(bookId) {
+	var checkouts;
+	try {
+		checkouts = JSON.parse(window.localStorage.getItem('checkouts'));
+	}
+	catch (err) {
+		checkouts = 0;
+	}
+	if (checkouts == undefined){
+		alert('undefined');
+		checkouts = 0;
+	}
+
+	var bookCheckoutBool = library.returnBookObj(bookId).getBookAvailability();
+	console.log(checkouts);
+	if (bookCheckoutBool == 1) {
+		if (checkouts < 2){
+			library.libraryCheckout(bookId);
+			var tableObj = $('#tablecreate');
+			tableObj.empty();
+			buildLibraryTable(library);
+			checkouts += 1;
+		}
+	}
+	else {
+		library.libraryCheckout(bookId);
+		var tableObj = $('#tablecreate');
+		tableObj.empty();
+		buildLibraryTable(library);
+		checkouts -= 1;
+	}
+
+	window.localStorage.setItem('checkouts', JSON.stringify(checkouts));
 }

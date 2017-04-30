@@ -15,7 +15,7 @@ $(document).ready(function(){
 			alert("Wrong Admin Password");
 		}
 		else if(document.getElementById("inp0").value.startsWith("U") == true) {
-    	window.location="studentLibrary.html";
+    	window.location="bookLibrary.html";
 		}
 		else{
 			alert("Username needs to start with U");
