@@ -1,4 +1,4 @@
-Example 1:
+Example 1: 
 	Vulnerability: Code Execution
 	Explanation: 
 		Since the input for the command comes directly from the user without any validation
