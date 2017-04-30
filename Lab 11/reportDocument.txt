@@ -1,0 +1,39 @@
+Example 1:
+	Vulnerability: Code Execution
+	Explanation: 
+		Since the input for the command comes directly from the user without any validation
+		the user can send any command they want to execute. This is because the string isn't
+		checked for any special characters. They could even escape the rm command and execute
+		an entirely different one if they desired to.
+
+	Possible Fix:
+		Make a whitelist of allowed characters so that this isn't possible.
+		Use the escapeshellcmd function so that the entire input is escaped.
+
+Example 2:
+	Vulnerability: XSS
+	Explanation:
+		Since the server echos input that comes directly from the user without validation,
+		they can send anything they want to. This enables them to get the server to echo
+		malicious code to it's clients and get them to run it locally.
+	Possible Fix:
+		Use htmlentities function to transform input into html.
+
+Example 3:
+	Vulnerability: File Inclusion
+	Explanation:
+		Since the file to include comes from the user and is not validated it could be
+		abused to even include remote files. These files are then executed or interpreted
+		which could compromise the system.
+	Possible Fix:
+		Build a whitelist of files that are safe to include.
+
+Example 4:
+	Vulnerability: SQL Injection
+	Explanation:
+		Since the input from the user is not validated, it could be manipulated to escape
+		the first WHERE clause and match an always true statement like 1=1. This would
+		then return every tuple in the products table.
+	Possible Fix:
+		Use mysql_real_escape_string to escape all special characters, removing the possibility
+		of this injection.
