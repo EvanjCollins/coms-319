@@ -21,6 +21,7 @@ $(document).ready(function(){
 	var logoutBtn	= document.getElementById('logout');
 	logoutBtn.onclick = function () {
 		window.localStorage.setItem("library", JSON.stringify(library));
+		window.location = "login.html";
 	}
 
 });
@@ -370,7 +371,6 @@ function checkoutBook(bookId) {
 		checkouts = 0;
 	}
 	if (checkouts == undefined){
-		alert('undefined');
 		checkouts = 0;
 	}
 

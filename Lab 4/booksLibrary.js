@@ -4,7 +4,22 @@ $(document).ready(function(){
 	try {
 		library = localStorage.getItem("library");
 		library = new Library(JSON.parse(library));
+		/*
+		library = JSON.parse(library);
+		library.prototype = new Library();
+		library.artShelf.prototype = new Shelf();
+		library.scienceShelf.prototype = new Shelf();
+		library.sportShelf.prototype = new Shelf();
+		library.literatureShelf.prototype = new Shelf();
+		*/
+
 		//library = $.extend(new Library(), library);
+		/*
+		console.log(JSON.parse(library));
+		var newLibrary = new Library();
+		library = $.extend(true, newLibrary, JSON.parse(library));
+		console.log(library.artShelf);
+		*/
 		//library = recastJSON(library);
 	}
 	catch (err) {
@@ -29,6 +44,7 @@ $(document).ready(function(){
 	var logoutBtn	= document.getElementById('logout');
 	logoutBtn.onclick = function () {
 		localStorage.setItem("library", JSON.stringify(library));
+		window.location = "login.html";
 	}
 
 });
@@ -40,8 +56,15 @@ function recastJSON(jsonObject) {
 
     // otherwise create a new object of type specified
     var obj = eval('new '+jsonObject.objectType+'()');
-    for(var i in jsonObject)
-        obj[i] = jsonObject[i];
+		console.log(obj);
+    for(var i in jsonObject){
+			obj[i] = jsonObject[i];
+			console.log(obj[i]);
+			var obj2 = eval('new '+obj[i].objectType+'()');
+			for(var j in obj[i]){
+				obj2[j] = obj[i][j];
+			}
+		}
     return obj;
 }
 
@@ -68,9 +91,7 @@ class Book{
 	setBookId(shelf) {
 		if (shelf == 'art'){
 			var randomNum = Math.floor(Math.random() * 996);
-			console.log(randomNum);
 			var toAdd = (4 - (randomNum % 4));
-			console.log(toAdd);
 			randomNum += toAdd;
 			this.bookId = randomNum;
 		}else if (shelf == 'science'){
@@ -293,7 +314,6 @@ function generateTableCell(bookObj) {
 }
 
 function displayBookInfo(bookId) {
-	console.log(bookId);
 	var bookObj = library.returnBookObj(bookId);
 	var returnString = bookObj.getBookInfo();
 
