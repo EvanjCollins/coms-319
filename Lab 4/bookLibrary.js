@@ -229,7 +229,7 @@ class Library{ //library
 
 	returnBookObj(bookId) {
 		var bookNum = bookId.toString();
-		bookNum = bookNum.substring(1);
+		bookNum = bookNum.substring(0);
 		if (bookNum % 4 == 0){
 			for (var j = 0; j < this.artShelf.getBookShelf().length; j++){
 				var book = this.artShelf.getBookShelf()[j];
